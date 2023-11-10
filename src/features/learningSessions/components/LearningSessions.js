@@ -39,6 +39,10 @@ function LearningSessions() {
   
     setStructuredSessions(sessionsByYearAndMonth);
   }, [learningSessions]);
+
+  const textStyle =  (session) => {
+     return { color: session.time < 60 ? 'salmon' : 'lightgreen' }
+  };
  
  
   const renderSessions = () => {
@@ -52,7 +56,7 @@ function LearningSessions() {
             <h3 className="sessions-month-header">{month}</h3>
             {structuredSessions[year][month].map((session, index) => (
               <div key={index}>
-                <div className="sessions-data">{session.date}: {session.time} Minuten | Karten: {session.cards}</div>
+                <div className="sessions-data" style={textStyle(session)}>{session.date}: {session.time} Minuten | Karten: {session.cards}</div>
               </div>
             ))}
           </div>

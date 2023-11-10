@@ -1,0 +1,144 @@
+.navigation-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: black;
+  z-index: 20;
+  transition: 0.5s;
+}
+
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.navigation-container .nav-header .logo {
+
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: white;
+  
+}
+
+.navigation-container .nav-header .menu-bar {
+  display: none;  
+  padding: 15px 20px;
+  color: white;
+  
+}
+
+.navigation-container .logo .icon {
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-container .logo .title {
+  position: relative;
+  font-size: 25px;
+}
+
+.navigation-container a {
+  text-decoration: none;
+  color: white;
+}
+
+.navigation-container ul li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 5px 20px;
+  list-style: none;
+}
+
+.navigation-container ul li:hover .nav-item {
+  background: #a9a9a9;
+  border-radius: 5px;
+}
+
+.navigation-container ul a li .nav-item.clicked {
+  background: #787878;
+  border-radius: 5px;
+}
+
+.navigation-container ul a li:hover .nav-item.clicked {
+  background: #a9a9a9;
+}
+
+.navigation-container ul li .nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.navigation-container ul li .icon {
+  margin-right: 20px;
+  padding: 10px 0;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-container ul li .title {
+  position: relative;
+  font-size: 16px;
+  padding: 10px 0;
+}
+
+.navigation-container .auth-buttons {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 10px 20px;
+  margin-top: auto;
+}
+
+.navigation-container .auth-buttons .nav-button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #787878;
+  color: white;
+  font-size: 16px;
+}
+
+.navigation-container .auth-buttons .nav-button:hover {
+  cursor: pointer;
+  background-color: #a9a9a9;
+}
+
+@media (max-width: 1280px) {
+  .navigation-container {
+    left: -250px;
+  }
+
+  .navigation-container.active {
+    left: 0;
+  }
+  .navigation-container.active .nav-header .menu-bar {
+    display: flex; 
+    padding: 15px 20px;
+    color: white;
+    
+  }
+}
+
+@media (max-width: 500px) {
+  .navigation-container {
+    left: -500px;
+    width: 100%;
+  }
+}

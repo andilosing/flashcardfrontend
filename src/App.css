@@ -1,38 +1,106 @@
-.App {
-  text-align: center;
+* {
+margin: 0; 
+padding: 0;
+box-sizing: border-box;
+font-size: 14px;
+font-family: Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.body-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 100%;
+  min-height: 100vh;
+  background: #303030;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.body-container .main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Lässt .main den verfügbaren Platz ausfüllen */
+  position: relative;
+  width: calc(100% - 250px);
+  left: 250px;
+  transition: .5s;
+  height: 100%; /* Stellt sicher, dass die Höhe sich an den verfügbaren Platz anpasst */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+.main .main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  width: 100%;
+  min-height: 100%;
+}
+
+.overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /*background-color: rgba(255, 255, 255, 0.1); */
+  backdrop-filter: blur(5px); 
+  z-index: 10; 
+  cursor: pointer; 
+}
+
+.input-label{
+  margin-left: 5px;
+  margin-bottom: 1px;
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+  border-style: none;
+  color: white;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+
+@media(max-width: 1280px){ 
+  .body-container .main{
+      left: 0;
+      width: 100%;
   }
-  to {
-    transform: rotate(360deg);
-  }
+  
+}
+
+
+
+
+.loader-container {
+  position: fixed; /* oder absolute, wenn Sie möchten, dass es sich relativ zum nächsten positionierten Vorfahr bewegt */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000; /* Hoch genug, um über anderen Inhalten zu sein */
+  background-color: rgba(255, 255, 255, 0.5); /* Halbtransparent, um den Inhalt leicht zu sehen */
+}
+
+
+.loader {
+  border: 5px solid #bababa; /* Light grey */
+  border-top: 5px solid #008ae5; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

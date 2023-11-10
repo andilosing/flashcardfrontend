@@ -1,0 +1,101 @@
+.learning-stack-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .start-learing-button {
+    flex: 1;
+    background-color: #787878;
+  }
+
+  .learning-stack-metadata{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .learning-progress{
+    background-color: #787878;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin: 0 5px;
+    min-width: 30px;
+    height: 30px;
+    font-weight: 700;
+    padding: 0 10px;
+  }
+
+  .difficulty-counter-container {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around; /* Gleichmäßiger Abstand */
+    align-items: center; /* Vertikale Zentrierung der Zähler */
+}
+
+.difficulty-counter {
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin: 0 5px;
+    min-width: 30px;
+    height: 30px;
+    font-weight: 700;
+}
+
+  .difficulty-counter.easy{
+    background-color: lightgreen;
+  }
+
+  .difficulty-counter.good{
+    background-color: skyblue;
+  }
+
+  .difficulty-counter.mid{
+    background-color: khaki;
+  }
+
+  .difficulty-counter.hard{
+    background-color: salmon;
+    margin-right: 0;
+  }
+
+  .fineshed-learning-stack-container{
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+  }
+
+  .difficulty-counter-container-fineshed{
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between ; /* Gleichmäßiger Abstand */
+    align-items: start; /* Vertikale Zentrierung der Zähler */
+    margin: 15px 0;
+
+  }
+
+  .finished-difficulty-description{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .finished-header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+
+}
+
+

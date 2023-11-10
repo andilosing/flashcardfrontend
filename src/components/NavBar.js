@@ -21,7 +21,6 @@ function NavBar({onNavClick, isActive }) {
     { icon: <FaHome size="25px" />, title: "Lernhistory", link: "/sessions" },
     { icon: <FaMoneyCheck size="25px" />, title: "tbd", link: "/" },
     { icon: <FaDollarSign size="25px" />, title: "tbd", link: "/" },
-    { icon: <FaUser size="25px" />, title: "tbd", link: "/" },
   ];
 
   const defaultClickedIndex = menuItems.findIndex(

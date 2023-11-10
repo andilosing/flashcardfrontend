@@ -74,11 +74,6 @@ font-family: Arial, Helvetica, sans-serif;
   
 }
 
-@media (max-width: 500px) {
-  .body-container {
-    height: 85vh;
-  }
-}
 
 
 

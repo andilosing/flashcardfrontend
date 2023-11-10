@@ -2,23 +2,24 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaChartBar,
-  FaHome,
+  FaSchool,
+  FaMedal,
   FaMoneyCheck,
   FaDollarSign,
-  FaUser,
+  FaStickyNote,
   FaApple,
   FaBars
 } from "react-icons/fa";
 import "./NavBar.css";
 function NavBar({onNavClick, isActive }) {
   const menuItems = [
-    { icon: <FaHome size="25px" />, title: "Lernen", link: "/" },
+    { icon: <FaSchool size="25px" />, title: "Lernen", link: "/" },
     {
-      icon: <FaChartBar size="25px" />,
+      icon: <FaStickyNote size="25px" />,
       title: "Karteikarten",
       link: "/add-card",
     },
-    { icon: <FaHome size="25px" />, title: "Lernhistory", link: "/sessions" },
+    { icon: <FaMedal size="25px" />, title: "Lernhistory", link: "/sessions" },
     { icon: <FaMoneyCheck size="25px" />, title: "tbd", link: "/" },
     { icon: <FaDollarSign size="25px" />, title: "tbd", link: "/" },
   ];

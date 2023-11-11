@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaChartBar,
@@ -12,6 +12,8 @@ import {
 } from "react-icons/fa";
 import "./NavBar.css";
 function NavBar({onNavClick, isActive }) {
+
+
   const menuItems = [
     { icon: <FaSchool size="25px" />, title: "Lernen", link: "/" },
     {
@@ -24,10 +26,35 @@ function NavBar({onNavClick, isActive }) {
     { icon: <FaDollarSign size="25px" />, title: "tbd", link: "/" },
   ];
 
+
   const defaultClickedIndex = menuItems.findIndex(
     (item) => item.title === "Dashboard"
   );
+
   const [clickedIndex, setClickedIndex] = useState(defaultClickedIndex);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const tokenInfo = localStorage.getItem('tokenInfo');
+    setIsLoggedIn(!!tokenInfo);
+
+    const handleLoginStatusChange = () => {
+      const tokenInfo = localStorage.getItem('tokenInfo');
+      setIsLoggedIn(!!tokenInfo);
+    };
+
+    window.addEventListener('loginStatusChanged', handleLoginStatusChange);
+
+    return () => {
+      window.removeEventListener('loginStatusChanged', handleLoginStatusChange);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('tokenInfo');
+    window.location.reload(); 
+  }
 
   return (
     <nav className={`navigation-container ${isActive ? "active" : ""}`}>
@@ -63,12 +90,15 @@ function NavBar({onNavClick, isActive }) {
       </ul>
 
       <div className="auth-buttons">
-        <Link to="/login">
-          <button className="nav-button">Anmelden</button>
-        </Link>
-        <Link to="/register">
-          <button className="nav-button">Registrieren</button>
-        </Link>
+        {isLoggedIn ? (
+          <Link to="/logout">
+            <button className="nav-button" onClick={handleLogout}>Ausloggen</button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <button className="nav-button">Anmelden</button>
+          </Link>
+        )}
       </div>
     </nav>
   );

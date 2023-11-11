@@ -9,7 +9,6 @@ export const getLearningSessionsApi = async () => {
 
 
         if (result.data && result.data.sessions) {
-            console.log(result.data.sessions)
             return result.data.sessions
         } else {
             throw new Error("sessions nicht vorhanden")

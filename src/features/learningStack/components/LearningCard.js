@@ -11,24 +11,35 @@ function LearningCard({ card, onCardUpdated, onUpdateDifficulty }) {
     setShowBack(!showBack);
   };
 
-  const handleDifficulty = (difficulty) => {
-    const progress_id = card.progress_id;
-    const status = card.status; 
-    onUpdateDifficulty(difficulty);
-
-    dispatch(updateLearningCardAction(progress_id, status, difficulty)).then(
-      () => {
-        setShowBack(false);
-        onCardUpdated();
-      }
-    );
+  const handleDifficulty = async (difficulty) => {
+    try {
+      const progress_id = card.progress_id;
+      const status = card.status; 
+      onUpdateDifficulty(difficulty);
+  
+      await dispatch(updateLearningCardAction(progress_id, status, difficulty)).then(
+        () => {
+          setShowBack(false);
+          onCardUpdated();
+        }
+      );
+    } catch (error) {
+      console.log(error)
+    }
+   
   };
 
   const formatTextWithLineBreaks = (text) => {
-    return text.split('\n').map((line, index, array) => (
-      // Fügt kein <br> nach der letzten Zeile ein
-      index === array.length - 1 ? line : <React.Fragment key={index}>{line}<br/></React.Fragment>
-    ));
+    try {
+      return text.split('\n').map((line, index, array) => (
+        // Fügt kein <br> nach der letzten Zeile ein
+        index === array.length - 1 ? line : <React.Fragment key={index}>{line}<br/></React.Fragment>
+      ));
+      
+    } catch (error) {
+      console.log(error)
+    }
+   
   };
 
   return (

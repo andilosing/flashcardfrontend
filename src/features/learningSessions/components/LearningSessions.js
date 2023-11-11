@@ -9,12 +9,16 @@ function LearningSessions() {
   const [structuredSessions, setStructuredSessions] = useState({});
   
   
-  useEffect(() => {
-    try {
-        dispatch(getLearningSessionsAction());
+  useEffect( () => {
+    const fetchData = async () => {
+      try {
+        await dispatch(getLearningSessionsAction());
       } catch (error) {
-        console.log("Fehler beim Laden des Lernstapels");
+        console.log("Fehler beim Laden des Lernstapels:", error);
       }
+    };
+  
+    fetchData();
     
   }, [dispatch]);
 

@@ -13,7 +13,17 @@ function App() {
   const [isNavActive, setIsNavActive] = useState(false);
 
   useEffect(() => {
+    if (!localStorage.getItem('test')) {
+      localStorage.setItem('test', 'Ihr Wert hier');
+    }
   }, [location]);
+
+  useEffect(() => {
+   
+    if (!localStorage.getItem('test')) {
+      localStorage.setItem('test', 'Ihr Wert hier');
+    }
+  }, []);
 
   return (
     <div className="body-container">

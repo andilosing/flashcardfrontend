@@ -50,11 +50,22 @@
 }
 
 .new-card-textarea:focus {
-    border-color: lightgreen;
+    border-color: skyblue;
 }
 
 .add-card-button{
-    height: 100px;
+    height: 110px;
+    background-color: skyblue;
+}
+
+.add-card-button.disabled{
     background-color: #787878;
+    cursor: auto;
+}
+
+.translation-button{
+    height: 50px;
+    margin-bottom: 10px;
+    background-color: skyblue;
 }
 

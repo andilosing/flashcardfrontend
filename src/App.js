@@ -14,6 +14,7 @@ import AddCard from "./features/cards/components/AddCard";
 import LearningStack from "./features/learningStack/components/LearningStack";
 import LearningSessions from "./features/learningSessions/components/LearningSessions";
 import Login from "./features/login/components/Login";
+import Decks from "./features/decks/components/Decks"
 
 function App() {
   const navigate = useNavigate();
@@ -55,8 +56,9 @@ function App() {
         <section className="main-content">
           <Routes>
             <Route path="/" element={<LearningStack />} />
-            <Route path="/add-card" element={<AddCard />} />
             <Route path="/sessions" element={<LearningSessions />} />
+            <Route path="/decks" element={<Decks />} />
+            <Route path="/decks/:deck_id" element={<AddCard />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </section>

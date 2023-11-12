@@ -1,4 +1,4 @@
-const BASE_URL = "https://flashcardbackendgopnik.onrender.com"; //"http://localhost:8080";   
+const BASE_URL = "https://flashcardbackendgopnik.onrender.com"     //  "http://localhost:8080"
 
 async function baseFetch(endpoint, options = {}, dispatch, getState) {
 
@@ -26,9 +26,9 @@ async function baseFetch(endpoint, options = {}, dispatch, getState) {
     },
     credentials: "include",
   };
-
+  
   const response = await fetch(`${BASE_URL}${endpoint}`, config);  
-
+  
   if (response.status === 401) {
     console.log("error 401")
     localStorage.removeItem('tokenInfo');

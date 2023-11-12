@@ -1,4 +1,4 @@
-import { addCardApi } from "./cardsApi";
+import { addCardApi, translateTextApi } from "./cardsApi";
 import { addNewCard} from "./cardsSlice";
 
 
@@ -23,3 +23,19 @@ export const addCardAction = (deckId, frontText, backText) => async (dispatch) =
   const formatTextForHtml = (text) => {
     return text.replace(/\n/g, '<br>');
 };
+
+export const translateTextAction = async (text, sourceLang, targetLang)  => {
+  try {
+    if(text === "" || sourceLang === " " || targetLang === ""){
+      throw new Error("Daten fehlen um Text zu übersetzen")
+    }
+
+    const translatedText = await translateTextApi(text, sourceLang, targetLang)
+    return translatedText
+
+    
+  } catch (error) {
+    console.error("Fehler beim Übersetzen", error);
+      throw Error
+  }
+}

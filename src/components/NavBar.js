@@ -18,8 +18,8 @@ function NavBar({onNavClick, isActive }) {
     { icon: <FaSchool size="25px" />, title: "Lernen", link: "/" },
     {
       icon: <FaStickyNote size="25px" />,
-      title: "Karteikarten",
-      link: "/add-card",
+      title: "Decks",
+      link: "/decks",
     },
     { icon: <FaMedal size="25px" />, title: "Lernhistory", link: "/sessions" },
     { icon: <FaMoneyCheck size="25px" />, title: "tbd", link: "/" },

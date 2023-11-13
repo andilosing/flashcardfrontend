@@ -82,9 +82,11 @@ function LearningCard({ card, onCardUpdated, onUpdateDifficulty }) {
       )}
 
 {!showBack && (
+  <div className="show-back-container"> 
       <button className="show-back-button button" onClick={toggleCardSide}>
         Rückseite zeigen
       </button>
+      </div>
 )}
     </div>
   )

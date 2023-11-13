@@ -40,10 +40,13 @@
 
 
   
-  
+.show-back-container {
+  display: flex;
+  width: 100%;
+}
 
   
-  .show-back-button.button {
+.show-back-button.button {
     height: 210px; 
     width: 100%; 
     background-color: #787878;
@@ -52,9 +55,9 @@
 
   .difficulty-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 Spalten, jede nimmt einen Bruchteil des Raums ein */
-    width: 100%; /* Der Container nimmt die volle verfügbare Breite ein */
-    gap: 10px; /* Optional: Abstand zwischen den Buttons */
+    grid-template-columns: repeat(4, 1fr); 
+    width: 100%; 
+    gap: 10px;
   }
   
   .difficulty-button.button {

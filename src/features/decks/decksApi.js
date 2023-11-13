@@ -6,6 +6,7 @@ export const getDecksApi = async () => {
     try {
         const options = { method: "GET" };
         const result = await baseFetch(ENDPOINT, options);
+        console.log(result)
 
         if (result.data && result.data.decks) {
             return result.data.decks;

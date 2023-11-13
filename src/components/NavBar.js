@@ -16,11 +16,7 @@ function NavBar({onNavClick, isActive }) {
 
   const menuItems = [
     { icon: <FaSchool size="25px" />, title: "Lernen", link: "/" },
-    {
-      icon: <FaStickyNote size="25px" />,
-      title: "Decks",
-      link: "/decks",
-    },
+    { icon: <FaStickyNote size="25px" />, title: "Decks", link: "/decks"},
     { icon: <FaMedal size="25px" />, title: "Lernhistory", link: "/sessions" },
     { icon: <FaMoneyCheck size="25px" />, title: "tbd", link: "/" },
     { icon: <FaDollarSign size="25px" />, title: "tbd", link: "/" },
@@ -72,7 +68,7 @@ function NavBar({onNavClick, isActive }) {
 
       <ul>
         {menuItems.map(({ icon, title, link }, index) => (
-          <Link to={link}>
+          <Link key={index} to={link}>
             <li
               key={index}
               onClick={() => {

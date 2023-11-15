@@ -1,5 +1,5 @@
-import { addCardApi, translateTextApi } from "./cardsApi";
-import { addNewCard} from "./cardsSlice";
+import { addCardApi, translateTextApi, getCardsForDeckApi } from "./cardsApi";
+import { addCardToDeck, fetchCardsForDeck} from "./cardsSlice";
 
 
 export const addCardAction = (deckId, frontText, backText) => async (dispatch) => {
@@ -12,7 +12,7 @@ export const addCardAction = (deckId, frontText, backText) => async (dispatch) =
       const formattedBackText = formatTextForHtml(backText);
 
       const card = await addCardApi(deckId, frontText, backText)
-      dispatch(addNewCard(card));
+      dispatch(addCardToDeck(deckId, card));
 
     } catch (error) {
       console.error("Fehler hinzufügen einer Karteikarte in Action", error);
@@ -39,3 +39,13 @@ export const translateTextAction = async (text, sourceLang, targetLang)  => {
       throw Error
   }
 }
+
+export const getCardsForDeckAction = (deckId) => async (dispatch) => {
+  try {        
+    const cards = await getCardsForDeckApi(deckId)
+    dispatch(fetchCardsForDeck({deckId, cards}));
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Eigenschaften:", error);
+    throw Error
+  }
+};

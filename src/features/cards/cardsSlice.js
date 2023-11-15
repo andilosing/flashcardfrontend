@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    cards: [],
+    decks: {},
     newCard: null
 }
 
@@ -9,14 +9,21 @@ const cardsSlice = createSlice({
     name: 'cards',
     initialState,
     reducers: {
-        fetchCards: (state, action) => {
-            state.cards = action.payload
+        fetchCardsForDeck: (state, action) => {
+            const { deckId, cards } = action.payload;
+            state.decks[deckId] = cards;
         },
-        addNewCard: (state, action) => {
-            state.cards = [...state.cards, action.payload]
-        }
+        addCardToDeck: (state, action) => {
+            const { deckId, card } = action.payload;
+            if (state.decks[deckId]) {
+                state.decks[deckId].push(card);
+            } else {
+                // Handle the case where the deck does not exist yet
+                state.decks[deckId] = [card];
+            }
+        },
     }
 })
 
-export const { fetchCards, addNewCard }  = cardsSlice.actions
+export const { fetchCardsForDeck, addCardToDeck }  = cardsSlice.actions
 export default cardsSlice.reducer

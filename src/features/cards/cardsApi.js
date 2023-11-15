@@ -60,3 +60,20 @@ export const translateTextApi  = async (text, sourceLang, targetLang) => {
   }
 };
 
+export const getCardsForDeckApi = async (deckId) => {
+  try {
+      const options = { method: "GET" };
+      const result = await baseFetch(`${ENDPOINT}${deckId}`, options);
+
+      if (result.data && result.data.cards) {
+          return result.data.cards;
+      } else {
+          throw new Error("decksnicht vorhanden")
+      }
+
+  } catch (error) {
+      console.error("Fehler beim Abrufen der Eigenschaften:", error);
+      throw error; 
+  }
+};
+

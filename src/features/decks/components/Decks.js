@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getDecksAction } from "../decksAction";
-import styles from "./Decks.css";
+import styles from "./Deck.css";
 
 function Decks() {
   const decks = useSelector((state) => state.decks.decks);
@@ -19,8 +19,9 @@ function Decks() {
         }
       };
       fetchData();
+      console.log("refresh")
     }
-  }, [dispatch, decks.length]);
+  }, [dispatch]);
 
   const handleDeckClick = (deck_id) => {
     navigate(`/decks/${deck_id}`);

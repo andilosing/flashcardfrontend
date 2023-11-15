@@ -70,6 +70,7 @@ function NavBar({onNavClick, isActive }) {
         {menuItems.map(({ icon, title, link }, index) => (
           <Link key={index} to={link}>
             <li
+              className="nav-li-item"
               key={index}
               onClick={() => {
                 setClickedIndex(index);

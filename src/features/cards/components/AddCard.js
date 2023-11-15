@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addCardAction, translateTextAction } from "../cardsAction";
+import { addCardAction, translateTextAction, getCardsForDeckAction } from "../cardsAction";
 import styles from "./AddCard.css";
 
 function AddCard() {
@@ -11,6 +11,21 @@ function AddCard() {
   const { deck_id } = useParams(); // Deck-ID aus URL extrahieren
 
   const isDisabled = !frontText || !backText;
+
+  const cardsInDecks = useSelector(
+    (state) => state.cards.decks
+  );
+
+  useEffect( () => {
+    async function fetchData(){
+      await dispatch(getCardsForDeckAction(deck_id));
+      
+    }
+    fetchData()
+
+    
+  }, [])
+
 
   const handleAddCard = async () => {
     if (frontText && backText && deck_id) {
@@ -51,7 +66,7 @@ function AddCard() {
       <div className="new-card-input-container">
         <div className="new-card-textarea-container">
           <label htmlFor="frontText" className="input-label">
-            Vorderseite
+            Vorderseite 
           </label>
           <textarea
             id="frontText"

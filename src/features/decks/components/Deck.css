@@ -56,6 +56,10 @@
     font-size: 2rem;
 }
 
+
+
+
+
 .card-item {
     display: flex;
     justify-content: space-between;
@@ -69,10 +73,32 @@
 
 }
 
+.delete-mode-buttons-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+
+
 .card-item:hover {
     background: #787878;
     cursor: pointer;
 }
+
+.card-item.delete-selected{
+    background: rgba(246, 134, 121, 0.59)
+}
+
+.card-item.delete-selected:hover{
+    background: rgba(246, 134, 121, 0.418)
+}
+
+
 
 .card-front, .card-back {
     flex: 1; /* Ermöglicht eine gleichmäßige Aufteilung des verfügbaren Raums */

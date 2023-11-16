@@ -1,5 +1,5 @@
-import { addCardApi, translateTextApi, getCardsForDeckApi } from "./cardsApi";
-import { addCardToDeck, fetchCardsForDeck} from "./cardsSlice";
+import { addCardApi, translateTextApi, getCardsForDeckApi, updateCardApi } from "./cardsApi";
+import { addCardToDeck, fetchCardsForDeck, updateCardInDeck } from "./cardsSlice";
 
 
 export const addCardAction = (deckId, frontText, backText) => async (dispatch) => {
@@ -46,6 +46,26 @@ export const getCardsForDeckAction = (deckId) => async (dispatch) => {
     dispatch(fetchCardsForDeck({deckId, cards}));
   } catch (error) {
     console.error("Fehler beim Abrufen der Eigenschaften:", error);
+    throw Error
+  }
+};
+
+
+export const updateCardAction = (deckId, cardId, frontText, backText) => async (dispatch) => {
+  try {        
+    if(!deckId || !cardId || frontText === "" || backText === ""){
+      throw new Error("Daten fehlen um Karte hinzuzufügen in Action")
+    }
+
+    const formattedFrontText = formatTextForHtml(frontText);
+    const formattedBackText = formatTextForHtml(backText);
+
+    const updatedCard = await updateCardApi(cardId, frontText, backText)
+    console.log("ich")
+    dispatch(updateCardInDeck({deckId, cardId, updatedCard}));
+
+  } catch (error) {
+    console.error("Fehler hinzufügen einer Karteikarte in Action", error);
     throw Error
   }
 };

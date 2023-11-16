@@ -61,6 +61,7 @@ function App() {
             <Route path="/decks" element={<Decks />} />
             <Route path="/decks/:deck_id" element={<Deck />} />
             <Route path="/decks/:deck_id/addCard" element={<AddCard />} />
+            <Route path="/decks/:deck_id/addCard/:card_id" element={<AddCard />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </section>

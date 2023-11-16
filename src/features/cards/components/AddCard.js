@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { addCardAction, translateTextAction, getCardsForDeckAction } from "../cardsAction";
+import { useParams, useNavigate } from "react-router-dom";
+import { addCardAction, translateTextAction, getCardsForDeckAction, updateCardAction } from "../cardsAction";
 import styles from "./AddCard.css";
 
 function AddCard() {
   const [frontText, setFrontText] = useState("");
   const [backText, setBackText] = useState("");
   const dispatch = useDispatch();
-  const { deck_id } = useParams(); // Deck-ID aus URL extrahieren
+  const navigate = useNavigate();
+  const { deck_id, card_id } = useParams();
 
   const isDisabled = !frontText || !backText;
 
@@ -16,28 +17,42 @@ function AddCard() {
     (state) => state.cards.decks
   );
 
-  useEffect( () => {
-    async function fetchData(){
-      await dispatch(getCardsForDeckAction(deck_id));
-      
+  useEffect(() => {
+    if (card_id && deck_id && cardsInDecks) {
+      console.log(cardsInDecks)
+      const deck = cardsInDecks[deck_id];
+  
+      if (deck) {
+        const cardToEdit = deck.find((card) => card.card_id.toString() === card_id);
+  
+        if (cardToEdit) {
+          setFrontText(cardToEdit.front_content);
+          setBackText(cardToEdit.back_content);
+        }
+      }
     }
-    fetchData()
-
-    
-  }, [])
+  }, [card_id, deck_id, cardsInDecks]);
+  
 
 
-  const handleAddCard = async () => {
+
+  const handleCardAction = async () => {
     if (frontText && backText && deck_id) {
       try {
-        await dispatch(addCardAction(deck_id, frontText, backText));
+        if (card_id) {
+          await dispatch(updateCardAction(deck_id, card_id, frontText, backText));
+          navigate(`/decks/${deck_id}`);
+        } else {
+          await dispatch(addCardAction(deck_id, frontText, backText));
+        }
         setFrontText("");
         setBackText("");
       } catch (error) {
-        console.error("Fehler beim Hinzufügen der Karte in Component:", error);
+        console.error("Fehler beim Hinzufügen/Aktualisieren der Karte:", error);
       }
     }
   };
+
 
   const handleTranslate = async (text, sourceLang, targetLang) => {
     try {
@@ -105,11 +120,11 @@ function AddCard() {
       )}
       <button
         className={`add-card-button button ${isDisabled ? "disabled" : ""}`}
-        onClick={handleAddCard}
+        onClick={handleCardAction}
         disabled={isDisabled}
         style={addButtonStyle}
       >
-        Karte hinzufügen
+        {card_id ? "Karte aktualisieren" : "Karte hinzufügen"}
       </button>
     </div>
   );

@@ -19,9 +19,9 @@ function LearningStack() {
 
   const handleStartLearning = async () => {
     try {
-      dispatch(getLearningStackAction());
       setDoneCards(0);
       setCardsAmount(0);
+      await dispatch(getLearningStackAction());    
       await resetDifficultyCounters();
     } catch (error) {
       console.log("Fehler beim Laden des Lernstapels");
@@ -58,7 +58,7 @@ function LearningStack() {
         <>
           <div className="learning-stack-metadata">
             <div className="learning-progress">
-              Karteikarten:{doneCards}/{cardsAmount}
+              {doneCards}/{cardsAmount}
             </div>
             <div className="difficulty-counter-container">
               <span className="difficulty-counter easy">{easyCount} </span>

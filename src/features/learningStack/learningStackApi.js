@@ -6,7 +6,6 @@ export const getLearningStackApi = async () => {
     try {
         const options = { method: "GET" };
         const result = await baseFetch("/learning-stack/", options);
-        console.log(result.data)
         if (result.data && result.data.learningStack) {
             return result.data.learningStack;
         } else {

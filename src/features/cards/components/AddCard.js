@@ -19,7 +19,6 @@ function AddCard() {
 
   useEffect(() => {
     if (card_id && deck_id && cardsInDecks) {
-      console.log(cardsInDecks)
       const deck = cardsInDecks[deck_id];
   
       if (deck) {
@@ -33,8 +32,6 @@ function AddCard() {
     }
   }, [card_id, deck_id, cardsInDecks]);
   
-
-
 
   const handleCardAction = async () => {
     if (frontText && backText && deck_id) {

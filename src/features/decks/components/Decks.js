@@ -10,7 +10,6 @@ function Decks() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (decks.length === 0) {
       const fetchData = async () => {
         try {
           await dispatch(getDecksAction());
@@ -19,9 +18,8 @@ function Decks() {
         }
       };
       fetchData();
-      console.log("refresh")
-    }
-  }, [dispatch]);
+      console.log("hole decks info")
+  }, []);
 
   const handleDeckClick = (deck_id) => {
     navigate(`/decks/${deck_id}`);

@@ -1,11 +1,14 @@
 import { getLearningStackApi, updateLearningCardApi } from "./learningStackApi";
 import { fetchLearningStack, updatedLearningCard  } from "./learningStackSlice";
+import { updateLearningStackStatus } from "../cards/cardsSlice";
 
 
 export const getLearningStackAction = () => async (dispatch) => {
     try {        
-      const learingStack = await getLearningStackApi()
-      dispatch(fetchLearningStack(learingStack));
+      const learningStack = await getLearningStackApi()
+      await dispatch(fetchLearningStack(learningStack));
+      const cardIdsInLearningStack = learningStack.map(card => card.card_id);
+      await  dispatch(updateLearningStackStatus(cardIdsInLearningStack));
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
       throw Error

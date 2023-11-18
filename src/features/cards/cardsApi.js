@@ -107,6 +107,34 @@ export const updateCardApi = async (card_id, front_content, back_content) => {
   }
 };
 
+export const deleteCardsApi = async (deckId, cardIds) => {
+  try {
+    const deleteData = {
+      deck_id: deckId,
+      card_ids: cardIds,
+    };
+
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(deleteData),
+    };
+
+    const result = await baseFetch(ENDPOINT, options);
+
+    if (result.message !== "Cards deleted successfully") {
+      throw new Error(`Server responded with status: ${result.status}`);
+    }
+
+  } catch (error) {
+    console.error("Fehler beim Löschen der Karten in der API:", error);
+    throw error;
+  }
+};
+
+
 
 
 

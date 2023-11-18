@@ -1,5 +1,5 @@
-import { addCardApi, translateTextApi, getCardsForDeckApi, updateCardApi } from "./cardsApi";
-import { addCardToDeck, fetchCardsForDeck, updateCardInDeck } from "./cardsSlice";
+import { addCardApi, translateTextApi, getCardsForDeckApi, updateCardApi, deleteCardsApi } from "./cardsApi";
+import { addCardToDeck, fetchCardsForDeck, updateCardInDeck, removeCardsFromDeck } from "./cardsSlice";
 
 
 export const addCardAction = (deckId, frontText, backText) => async (dispatch) => {
@@ -12,7 +12,7 @@ export const addCardAction = (deckId, frontText, backText) => async (dispatch) =
       const formattedBackText = formatTextForHtml(backText);
 
       const card = await addCardApi(deckId, frontText, backText)
-      dispatch(addCardToDeck(deckId, card));
+      dispatch(addCardToDeck({deckId, card}));
 
     } catch (error) {
       console.error("Fehler hinzufügen einer Karteikarte in Action", error);
@@ -61,11 +61,27 @@ export const updateCardAction = (deckId, cardId, frontText, backText) => async (
     const formattedBackText = formatTextForHtml(backText);
 
     const updatedCard = await updateCardApi(cardId, frontText, backText)
-    console.log("ich")
-    dispatch(updateCardInDeck({deckId, cardId, updatedCard}));
+    const numericCardId = Number(cardId);
+    dispatch(updateCardInDeck({deckId, cardId: numericCardId, updatedCard}));
 
   } catch (error) {
     console.error("Fehler hinzufügen einer Karteikarte in Action", error);
     throw Error
   }
 };
+
+export const deleteCardsAction = (deckId, cardIds) => async (dispatch) => {
+  try {        
+    if(!deckId || cardIds.length === 0){
+      throw new Error("Missing data to delete cards in Action")
+    }
+
+    await deleteCardsApi(deckId, cardIds);
+    dispatch(removeCardsFromDeck({deckId, cardIds}));
+
+  } catch (error) {
+    console.error("Error deleting cards in Action", error);
+    throw error; // It's generally better to throw the original error
+  }
+};
+

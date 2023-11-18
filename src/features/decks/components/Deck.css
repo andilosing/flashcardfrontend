@@ -8,27 +8,60 @@
     align-items: center;
 }
 
+.decks-cards-header-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 .decks-cards-header{
     width: 100%;
     display: flex;
     justify-content: center;
     font-size: 2rem;
-    margin-bottom: 10px;
 }
 
 .show-add-card-button{
-    width: 100%;
-    height: 110px;
-    margin-bottom: 15px;
     background: skyblue;
+    height: 32.5px;
+    width: 36.6px;
 }
 
-.show-cards-button{
-   width: 100%;
-   height: 110px;
-   margin-bottom: 15px;
-   background: lightblue;
+.show-add-card-button{
+    background: skyblue;
+    height: 32.5px;
+    width: 36.6px;
 }
+
+.delete-mode-button{
+    height: 32.5px;
+    width: 36.6px;
+    background: #787878;
+    position: sticky;
+    top: 0;
+}
+
+.delete-mode-button.active{
+    background: salmon;
+}
+
+
+
+.delete-cards-button{
+    width: 100%;
+    height: 32.5px;
+    background: #787878;
+    margin-bottom: 2px;
+}
+
+.delete-cards-button.active{
+    background: salmon;
+}
+
+
 
 .decks-cards-list {
     flex: 1;
@@ -40,17 +73,7 @@
     align-items: center;
 }
 
-.decks-cards-header-container {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background: #303030;
-    font-size: 2rem;
-}
+
 
 .decks-cards-header-container h4{
     font-size: 2rem;
@@ -73,13 +96,10 @@
 
 }
 
-.delete-mode-buttons-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-    align-items: center;
-    width: 100%;
+.card-item.in-learning-stack{
+    /*background: lightgreen*/
 }
+
 
 
 
@@ -119,8 +139,12 @@
         border-top: 0.0001px solid #4f4f4f;
     }
 
-    .decks-cards-header-container{
+    .decks-cards-list-header-container{
         display: none;
+    }
+
+    .card-item:hover{
+        background: none;
     }
 }
 

@@ -42,6 +42,11 @@
     width: 36.6px;
 }
 
+.select-all-button{
+    width: 100%;
+    background: #787878;
+}
+
 .delete-mode-button{
     height: 32.5px;
     width: 36.6px;

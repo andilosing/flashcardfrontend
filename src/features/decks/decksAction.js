@@ -1,5 +1,5 @@
-import { getDecksApi } from "./decksApi";
-import { fetchDecks } from "./decksSlice";
+import { getDecksApi, updateDeckStatusApi } from "./decksApi";
+import { fetchDecks, updateDeckStatus } from "./decksSlice";
 
 
 export const getDecksAction = () => async (dispatch) => {
@@ -11,3 +11,17 @@ export const getDecksAction = () => async (dispatch) => {
       throw Error
     }
   };
+
+  export const updateDeckStatusAction = (deckId, isActive) => async (dispatch) => {
+    try {
+        // Aufrufen der API-Funktion zur Aktualisierung des Deck-Status
+        await updateDeckStatusApi(deckId, isActive);
+        
+        // Dispatch der Aktion, um den Deck-Status im Redux Store zu aktualisieren
+        dispatch(updateDeckStatus({deckId, isActive}));
+
+    } catch (error) {
+        console.error("Fehler beim Aktualisieren des Deck-Status:", error);
+        // Optional: Dispatch einer Fehler-Aktion, falls erforderlich
+    }
+};

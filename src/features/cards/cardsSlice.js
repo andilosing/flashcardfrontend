@@ -10,16 +10,20 @@ const cardsSlice = createSlice({
   initialState,
   reducers: {
     fetchCardsForDeck: (state, action) => {
-      const { deckId, cards } = action.payload;
-      state.decks[deckId] = cards;
-      state.decks[deckId] = [...state.decks[deckId]].sort(
-        (a, b) => a.card_id - b.card_id
-      );
+      const { deckId, cards, permissions } = action.payload;
+
+      // Erstellen oder Aktualisieren des Deck-Objekts mit Karten und Berechtigungen
+      state.decks[deckId] = {
+        cards: [...cards].sort((a, b) => a.card_id - b.card_id),
+        permissions: permissions
+      };
+      
     },
     addCardToDeck: (state, action) => {
       const { deckId, card } = action.payload;
-      if (state.decks[deckId]) {
-        state.decks[deckId].push(card);
+      if (state.decks[deckId].cards) {
+        card.is_active = null
+        state.decks[deckId].cards.push(card);
       } else {
         // Handle the case where the deck does not exist yet
         //state.decks[deckId] = [card];
@@ -28,20 +32,20 @@ const cardsSlice = createSlice({
     updateCardInDeck: (state, action) => {
       const { deckId, cardId, updatedCard } = action.payload;
 
-      if (state.decks[deckId]) {
+      if (state.decks[deckId].cards) {
+        
         // Konvertieren von cardId in Number, wenn card.card_id eine Zahl ist
         const numericCardId = Number(cardId);
-        const cardIndex = state.decks[deckId].findIndex(
+        const cardIndex = state.decks[deckId].cards.findIndex(
           (card) => card.card_id === numericCardId
         );
-
         if (cardIndex !== -1) {
-          state.decks[deckId][cardIndex] = {
-            ...state.decks[deckId][cardIndex],
+          state.decks[deckId].cards[cardIndex] = {
+            ...state.decks[deckId].cards[cardIndex],
             ...updatedCard,
           };
           // Sortieren, wenn notwendig
-          state.decks[deckId] = [...state.decks[deckId]].sort(
+          state.decks[deckId].cards = [...state.decks[deckId].cards].sort(
             (a, b) => a.card_id - b.card_id
           );
         }
@@ -53,8 +57,8 @@ const cardsSlice = createSlice({
       //    console.log(JSON.parse(JSON.stringify(state.decks)));
       //     console.log(JSON.parse(JSON.stringify(state.decks[deckId])));
 
-      if (state.decks[deckId]) {
-        state.decks[deckId] = state.decks[deckId].filter(
+      if (state.decks[deckId].cards) {
+        state.decks[deckId].cards = state.decks[deckId].cards.filter(
           (card) => !cardIds.includes(card.card_id)
         );
       }
@@ -62,12 +66,22 @@ const cardsSlice = createSlice({
     updateLearningStackStatus: (state, action) => {
       const cardIdsInLearningStack = action.payload;
       Object.keys(state.decks).forEach((deckId) => {
-        state.decks[deckId].forEach((card) => {
+        state.decks[deckId].cards.forEach((card) => {
           if (cardIdsInLearningStack.includes(card.card_id)) {
-            card.in_learning_stack = true;
+            card.is_active = true
           }
         });
       });
+    },
+    setActiveStatus: (state, action) => {
+      const { deckId, cardIds, activeStatus } = action.payload;
+      if (state.decks[deckId].cards) {
+        state.decks[deckId].cards.forEach((card) => {
+          if (cardIds.includes(card.card_id)) {
+            card.is_active = activeStatus; 
+          }
+        });
+      }
     },
   },
 });
@@ -78,5 +92,6 @@ export const {
   updateCardInDeck,
   removeCardsFromDeck,
   updateLearningStackStatus,
+  setActiveStatus
 } = cardsSlice.actions;
 export default cardsSlice.reducer;

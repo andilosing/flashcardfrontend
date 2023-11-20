@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCardsForDeckAction, deleteCardsAction } from "../../cards/cardsAction";
+import {
+  getCardsForDeckAction,
+  deleteCardsAction,
+} from "../../cards/cardsAction";
+import { setActiveStatusAction } from "../../learningStack/learningStackAction";
 import styles from "./Decks.css";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash, FaPause, FaPlay } from "react-icons/fa";
 
 function Decks() {
   const { deck_id } = useParams();
-  const cardsInDecks = useSelector((state) => state.cards.decks[deck_id]);
+  const deckDetails = useSelector((state) => state.cards.decks[deck_id]);
+  const cardsInDecks = deckDetails ? deckDetails.cards : [];
+  const permissions = deckDetails ? deckDetails.permissions : {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,16 +21,24 @@ function Decks() {
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedCards, setSelectedCards] = useState([]);
 
+  const [inactiveStatusMode, setInactiveStatusMode] = useState(false);
+  const [activeStatusMode, setActiveStatusMode] = useState(false);
+
   useEffect(() => {
     const fetchCards = async () => {
       await dispatch(getCardsForDeckAction(deck_id));
     };
 
-    if (!cardsInDecks || !cardsInDecks[deck_id] || cardsInDecks[deck_id].length === 0) {
+    if (!deckDetails) {
       fetchCards();
-      console.log("hole karten für deck ")
+      console.log("hole karten für deck ");
     }
-  }, [deck_id, dispatch, cardsInDecks]);
+
+    console.log(permissions);
+  }, [deck_id, dispatch, deckDetails]);
+
+  const userCanEdit =
+    permissions.is_owner || permissions.permission_level === "write";
 
   const handleAddCardClick = () => {
     navigate(`/decks/${deck_id}/addCard`);
@@ -52,63 +66,210 @@ function Decks() {
     }
   };
 
-  const handleDeleteModeToggle = () => {
-    if (deleteMode) {
-      setSelectedCards([]);
+  const handleSetCardsInactive = async () => {
+    try {
+      if (selectedCards.length > 0) {
+        await dispatch(setActiveStatusAction(deck_id, selectedCards, false));
+        setSelectedCards([]);
+        setInactiveStatusMode(false);
+      }
+    } catch (error) {
+      console.log("Fehler beim Setzen des inaktiven Status für Karten:", error);
     }
+  };
+
+  const handleSetCardsActive = async () => {
+    try {
+      if (selectedCards.length > 0) {
+        await dispatch(setActiveStatusAction(deck_id, selectedCards, true));
+        setSelectedCards([]);
+        setActiveStatusMode(false);
+      }
+    } catch (error) {
+      console.log("Fehler beim Setzen des inaktiven Status für Karten:", error);
+    }
+  };
+
+  const handleDeleteModeToggle = () => {
     setDeleteMode(!deleteMode);
+    setSelectedCards([]);
+    setInactiveStatusMode(false);
+    setActiveStatusMode(false);
+  };
+
+  const handleInactiveStatusModeToggle = () => {
+    setInactiveStatusMode(!inactiveStatusMode);
+    setSelectedCards([]);
+    setDeleteMode(false);
+    setActiveStatusMode(false);
+  };
+
+  const handleActiveStatusModeToggle = () => {
+    setActiveStatusMode(!activeStatusMode);
+    setSelectedCards([]);
+    setDeleteMode(false);
+    setInactiveStatusMode(false);
+  };
+
+  const displayIsActiveStatus = (isActive) => {
+    if (isActive === true) {
+      return "aktiv in stapel";
+    } else if (isActive === false) {
+      return "inaktiv in stapel";
+    } else {
+      return "nicht in stapel";
+    }
+  };
+
+  const selectAllCardsBasedOnStatus = () => {
+    const newSelectedCards = cardsInDecks
+      .filter((card) => {
+        if (inactiveStatusMode) {
+          return card.is_active !== false;
+        } else if (activeStatusMode) {
+          return card.is_active !== true;
+        } else {
+          return true;
+        }
+      })
+      .map((card) => card.card_id);
+    setSelectedCards(newSelectedCards);
   };
 
   return (
     <div className="decks-cards-container">
       <div className="decks-cards-header-container">
-        <div
-          onClick={handleDeleteModeToggle}
-          className={`delete-mode-button button ${deleteMode ? "active": ""}`}
-        >
-           <FaTrash />
+        <div className="decks-edit-buttons-container left">
+          <div
+            onClick={handleInactiveStatusModeToggle}
+            className={`inactive-mode-button button ${
+              inactiveStatusMode ? "active" : ""
+            }`}
+          >
+            <FaPause />
+          </div>
+          <div
+            onClick={handleActiveStatusModeToggle}
+            className={`active-mode-button button ${
+              activeStatusMode ? "active" : ""
+            }`}
+          >
+            <FaPlay />
+          </div>
         </div>
         <h3 className="decks-cards-header">Karteikarten</h3>
-        <div
-          onClick={handleAddCardClick}
-          className="show-add-card-button button"
-        >
-          <FaPlus />
+        <div className="decks-edit-buttons-container right">
+        {userCanEdit && (
+          <>
+            <div
+              onClick={handleDeleteModeToggle}
+              className={`delete-mode-button button ${
+                deleteMode ? "active" : ""
+              }`}
+            >
+              <FaTrash />
+            </div>
+
+            <div
+              onClick={handleAddCardClick}
+              className="show-add-card-button button"
+            >
+              <FaPlus />
+            </div>
+            </>
+          
+        )}
         </div>
+        {deleteMode || inactiveStatusMode || activeStatusMode ? (
+          <button
+            onClick={selectAllCardsBasedOnStatus}
+            className="select-all-button button"
+          >
+            Alle auswählen
+          </button>
+        ) : null}
       </div>
-      {deleteMode && (
+      <ul className="decks-cards-list">
+      <div className="deck-cards-list-items-container">
+        {cardsInDecks &&
+          cardsInDecks
+            .filter((card) => {
+              // Filter basierend auf dem Modus
+              if (inactiveStatusMode) {
+                return card.is_active !== false;
+              } else if (activeStatusMode) {
+                return card.is_active !== true;
+              }
+              return true;
+            })
+            .map((card, index) => (
+              <li
+                key={index}
+                className={`card-item ${
+                  card.is_active === true
+                    ? "active"
+                    : card.is_active === false
+                    ? "inactive"
+                    : "null-status"
+                } ${
+                  deleteMode && selectedCards.includes(card.card_id)
+                    ? "delete-selected"
+                    : inactiveStatusMode && selectedCards.includes(card.card_id)
+                    ? "inactive-selected"
+                    : activeStatusMode && selectedCards.includes(card.card_id)
+                    ? "active-selected"
+                    : ""
+                }`}
+                onClick={() =>
+                  deleteMode || inactiveStatusMode || activeStatusMode
+                    ? toggleCardSelection(card.card_id)
+                    : userCanEdit && handleCardItemClick(card.card_id)
+                }
+              >
+                <div className="card-front">
+                  <p>{card.front_content}</p>
+                </div>
+                <div className="card-back">
+                  <p>{card.back_content}</p>
+                </div>
+              </li>
+            ))}
+            </div>
+            <div className="deck-cards-action-buttons-container">
+             {deleteMode && userCanEdit && (
         <button
           onClick={handleDeleteSelectedCards}
-          className={`delete-cards-button button ${
+          className={`deck-action-button delete button ${
             selectedCards.length > 0 ? "active" : ""
           }`}
           disabled={selectedCards.length <= 0}
         >
-         Karten löschen
+          Karten löschen
         </button>
       )}
-      <ul className="decks-cards-list">
-        {cardsInDecks &&
-          cardsInDecks.map((card, index) => (
-            <li
-              key={index}
-              className={`card-item ${card.in_learning_stack ? "in-learning-stack" : ""} ${
-                selectedCards.includes(card.card_id) ? "delete-selected" : ""
-              }`}
-              onClick={() =>
-                deleteMode
-                  ? toggleCardSelection(card.card_id)
-                  : handleCardItemClick(card.card_id)
-              }
-            >
-              <div className="card-front">
-                <p>{card.front_content}</p>
-              </div>
-              <div className="card-back">
-                <p>{card.back_content}</p>
-              </div>
-            </li>
-          ))}
+      {inactiveStatusMode && (
+        <button
+          onClick={handleSetCardsInactive}
+          className={`deck-action-button inactive-mode button ${
+            selectedCards.length > 0 ? "active" : ""
+          }`}
+          disabled={selectedCards.length <= 0}
+        >
+          Als inaktiv markieren
+        </button>
+      )}
+      {activeStatusMode && (
+        <button
+          onClick={handleSetCardsActive}
+          className={`deck-action-button active-mode button ${
+            selectedCards.length > 0 ? "active" : ""
+          }`}
+          disabled={selectedCards.length <= 0}
+        >
+          Als activ markieren
+        </button>
+      )}
+      </div>
       </ul>
     </div>
   );

@@ -22,7 +22,7 @@ function AddCard() {
       const deck = cardsInDecks[deck_id];
   
       if (deck) {
-        const cardToEdit = deck.find((card) => card.card_id.toString() === card_id);
+        const cardToEdit = deck.cards.find((card) => card.card_id.toString() === card_id);
   
         if (cardToEdit) {
           setFrontText(cardToEdit.front_content);

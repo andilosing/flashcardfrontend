@@ -18,7 +18,9 @@
 .decks-list {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .decks-list-item {
@@ -110,4 +112,38 @@
     border-radius: 5px;
     font-weight: 700;
     margin-bottom: 20px;
+  }
+
+  .deck-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px 10px 10px;
+  }
+
+  .deck-active-toggle {
+    background-color: #787878;
+    border-radius: 5px;
+    min-width: 30px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck-active-toggle.active {
+    background-color: lightgreen;
+  }
+
+  .deck-active-toggle.inactive {
+    background-color: khaki;
+  }
+
+  .deck-owner{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
   }

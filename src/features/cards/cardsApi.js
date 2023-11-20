@@ -65,8 +65,8 @@ export const getCardsForDeckApi = async (deckId) => {
       const options = { method: "GET" };
       const result = await baseFetch(`${ENDPOINT}${deckId}`, options);
 
-      if (result.data && result.data.cards) {
-          return result.data.cards;
+      if (result.data && result.data.cards && result.data.permissions) {
+          return result.data;
       } else {
           throw new Error("decksnicht vorhanden")
       }
@@ -133,6 +133,8 @@ export const deleteCardsApi = async (deckId, cardIds) => {
     throw error;
   }
 };
+
+
 
 
 

@@ -42,8 +42,11 @@ export const translateTextAction = async (text, sourceLang, targetLang)  => {
 
 export const getCardsForDeckAction = (deckId) => async (dispatch) => {
   try {        
-    const cards = await getCardsForDeckApi(deckId)
-    dispatch(fetchCardsForDeck({deckId, cards}));
+    const cardsInDeck = await getCardsForDeckApi(deckId)
+    
+    const cards = cardsInDeck.cards
+    const permissions = cardsInDeck.permissions
+    dispatch(fetchCardsForDeck({deckId, cards, permissions}));
   } catch (error) {
     console.error("Fehler beim Abrufen der Eigenschaften:", error);
     throw Error
@@ -84,4 +87,6 @@ export const deleteCardsAction = (deckId, cardIds) => async (dispatch) => {
     throw error; // It's generally better to throw the original error
   }
 };
+
+
 

@@ -1,4 +1,4 @@
-const BASE_URL =  "https://flashcardbackendgopnik.onrender.com"    //"http://localhost:8080"      //   
+const BASE_URL =  "https://flashcardbackendgopnik.onrender.com"   //      //   "http://localhost:8080" 
 
 async function baseFetch(endpoint, options = {}, dispatch, getState) {
 

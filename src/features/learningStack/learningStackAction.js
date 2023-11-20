@@ -1,6 +1,6 @@
-import { getLearningStackApi, updateLearningCardApi } from "./learningStackApi";
+import { getLearningStackApi, updateLearningCardApi, setActiveStatusApi } from "./learningStackApi";
 import { fetchLearningStack, updatedLearningCard  } from "./learningStackSlice";
-import { updateLearningStackStatus } from "../cards/cardsSlice";
+import { updateLearningStackStatus, setActiveStatus } from "../cards/cardsSlice";
 
 
 export const getLearningStackAction = () => async (dispatch) => {
@@ -33,5 +33,20 @@ export const getLearningStackAction = () => async (dispatch) => {
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
       throw Error
+    }
+  };
+
+  export const setActiveStatusAction = (deckId, cardIds, activeStatus) => async (dispatch) => {
+    try {        
+      if(!deckId || cardIds.length === 0 || (activeStatus !== true && activeStatus !== false)){
+        throw new Error("Missing data to delete cards in Action")
+      }
+  
+      await setActiveStatusApi(cardIds, activeStatus);
+      dispatch(setActiveStatus({deckId, cardIds, activeStatus}));
+  
+    } catch (error) {
+      console.error("Error deleting cards in Action", error);
+      throw error; // It's generally better to throw the original error
     }
   };

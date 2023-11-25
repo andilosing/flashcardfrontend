@@ -30,6 +30,10 @@
     min-width: 80px;
 }
 
+.decks-edit-buttons-container{
+    justify-content: end;
+}
+
 .show-add-card-button{
     background: skyblue;
     height: 32.5px;
@@ -135,6 +139,18 @@
     width: 100%;
 }
 
+.deck-action-button.inactive-mode.active{
+    background: khaki;
+}
+
+.deck-action-button.active-mode.active{
+    background: lightgreen;
+}
+.deck-action-button.delete.active{
+    background: salmon;
+}
+
+
 
 
 .decks-cards-header-container h4{
@@ -158,40 +174,29 @@
 
 }
 
-.card-item.active{
-    border: 1px solid lightgreen
-}
-
-.card-item.inactive{
-    border: 1px solid khaki
-}
-
-.card-item.null-status{
-    border: 1px solid skyblue
-}
 
 .card-item.delete-selected{
-    background: rgba(246, 134, 121, 0.6)
+    border: 1px solid salmon;
 }
 
 .card-item.delete-selected:hover{
-    background: rgba(246, 134, 121, 0.4)
+    background: rgba(246, 134, 121, 0.6);
 }
 
 .card-item.active-selected{
-    background: rgba(144, 238, 144, 0.6)
+    border: 1px solid lightgreen;
 }
 
 .card-item.active-selected:hover{
-    background: rgba(144, 238, 144, 0.4)
+    background: rgba(144, 238, 144, 0.6);
 }
 
 .card-item.inactive-selected{
-    background: rgba(240, 230, 140, 0.6)
+    border: 1px solid khaki;
 }
 
 .card-item.inactive-selected:hover{
-    background: rgba(240, 230, 140, 0.4)
+    background: rgba(240, 230, 140, 0.6);
 }
 
 
@@ -201,6 +206,28 @@
     background: #787878;
     cursor: pointer;
 }
+
+.card-status{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;    
+    width: 25px;
+    border-radius: 5px;
+    margin-left: 5px;
+    background: #787878;
+}
+
+.card-status.active{
+    background: lightgreen;
+}
+
+.card-status.inactive{
+    background: khaki;
+}
+
+
+
 
 
 
@@ -214,10 +241,18 @@
 }
 
 @media (max-width: 500px) {
-    .card-item {
-        flex-direction: column;
-        padding: 10px 15px;
-         
+ .card-item {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .card-status {
+        margin-right: 10px; /* Fügt Abstand zwischen dem Symbol und dem Inhalt hinzu */
+    }
+
+    .card-content {
+        width: 100%;
+        /* Weitere Stile, falls erforderlich */
     }
 
 

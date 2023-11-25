@@ -23,7 +23,7 @@ export const getDecksApi = async () => {
 export const updateDeckStatusApi = async (deckId, isActive) => {
     try {
         const options = {
-            method: "POST",
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ deckId, isActive }),
         };
@@ -38,6 +38,28 @@ export const updateDeckStatusApi = async (deckId, isActive) => {
 
     } catch (error) {
         console.error("Fehler beim Aktualisieren des Deck-Status:", error);
+        throw error;
+    }
+};
+
+export const addDeckApi = async (deckName) => {
+    try {
+        const options = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ deckName: deckName }), 
+        };
+
+        const result = await baseFetch(ENDPOINT, options);
+
+        if (result.data && result.data.deck) {
+            return result.data.deck; 
+        } else {
+            throw new Error("Fehler beim Hinzufügen des Decks");
+        }
+
+    } catch (error) {
+        console.error("Fehler beim Hinzufügen des Decks:", error);
         throw error;
     }
 };

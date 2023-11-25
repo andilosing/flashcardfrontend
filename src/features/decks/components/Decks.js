@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getDecksAction, updateDeckStatusAction } from "../decksAction";
 import styles from "./Deck.css";
-import { FaPause, FaPlay } from "react-icons/fa";
+import { FaPause, FaPlay, FaPlus } from "react-icons/fa";
 
 function Decks() {
   const decks = useSelector((state) => state.decks.decks);
@@ -31,9 +31,24 @@ function Decks() {
     dispatch(updateDeckStatusAction(deckId, !currentStatus));
   };
 
+  const handleAddDeckClick = () => {
+    navigate(`/decks/add`);
+  };
+
   return (
     <div className="decks-container">
-      <h3 className="decks-header">Kateikartendecks</h3>
+      <div className="decks-cards-header-container">
+        <div className="decks-edit-buttons-container left"></div>
+        <h3 className="decks-header">Decks</h3>
+        <div className="decks-edit-buttons-container right">
+        <div
+                onClick={handleAddDeckClick}
+                className="show-add-card-button button"
+              >
+                <FaPlus />
+              </div>
+        </div>
+      </div>
       <ul className="decks-list">
         {decks.map((deck) => (
           <li
@@ -69,7 +84,9 @@ function Decks() {
             </div>
             <div className="deck-footer">
               <div
-                className={`deck-active-toggle ${deck.is_active ? "active" : "inactive"}`}
+                className={`deck-active-toggle ${
+                  deck.is_active ? "active" : "inactive"
+                }`}
                 onClick={(event) =>
                   handleStatusToggle(event, deck.deck_id, deck.is_active)
                 }

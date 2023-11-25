@@ -35,8 +35,6 @@ function Decks() {
       fetchCards();
       console.log("hole karten für deck ");
     }
-
-    console.log(permissions);
   }, [deck_id, dispatch, deckDetails]);
 
   const userCanEdit =
@@ -203,12 +201,6 @@ function Decks() {
                 <li
                   key={index}
                   className={`card-item ${
-                    card.is_active === true
-                      ? "active"
-                      : card.is_active === false
-                      ? "inactive"
-                      : "null-status"
-                  } ${
                     deleteMode && selectedCards.includes(card.card_id)
                       ? "delete-selected"
                       : inactiveStatusMode &&
@@ -224,11 +216,30 @@ function Decks() {
                       : userCanEdit && handleCardItemClick(card.card_id)
                   }
                 >
-                  <div className="card-front">
-                    <p>{card.front_content}</p>
+                  <div
+                    className={`card-status ${
+                      card.is_active === true
+                        ? "active"
+                        : card.is_active === false
+                        ? "inactive"
+                        : "null-status"
+                    }`}
+                  >
+                    {card.is_active === true ? (
+                      <FaPlay />
+                    ) : card.is_active === false ? (
+                      <FaPause />
+                    ) : (
+                      ""
+                    )}
                   </div>
-                  <div className="card-back">
-                    <p>{card.back_content}</p>
+                  <div class="card-content">
+                    <div className="card-front">
+                      <p>{card.front_content}</p>
+                    </div>
+                    <div className="card-back">
+                      <p>{card.back_content}</p>
+                    </div>
                   </div>
                 </li>
               ))}
@@ -242,7 +253,7 @@ function Decks() {
               }`}
               disabled={selectedCards.length <= 0}
             >
-              Karten löschen
+              löschen
             </button>
           )}
           {inactiveStatusMode && (
@@ -253,7 +264,7 @@ function Decks() {
               }`}
               disabled={selectedCards.length <= 0}
             >
-              Als inaktiv markieren
+              inaktiv
             </button>
           )}
           {activeStatusMode && (
@@ -264,7 +275,7 @@ function Decks() {
               }`}
               disabled={selectedCards.length <= 0}
             >
-              Als activ markieren
+              aktiv
             </button>
           )}
         </div>

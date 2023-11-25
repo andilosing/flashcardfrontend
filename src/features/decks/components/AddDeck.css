@@ -1,0 +1,54 @@
+/* Stil für die AddDeck-Komponente */
+
+.new-deck-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto; /* Zentriert den Container */
+    width: 100%;
+    height: 100%;
+    justify-content: space-between; /* Zentriert den Inhalt vertikal */
+    align-items: center; /* Zentriert den Inhalt horizontal */
+}
+
+.new-deck-header {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.new-deck-input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.new-deck-input {
+    width: 100%; /* Volle Breite des Containers */ 
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 1px solid #4f4f4f;
+    color: white;
+    outline: none;
+    text-align: center; /* Zentriert den Text horizontal */
+}
+
+.new-deck-input:focus {
+    border-color: skyblue;
+}
+
+.add-deck-button {
+    height: 110px;
+    width: 100%;
+    background-color: skyblue;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+}
+
+.add-deck-button.disabled {
+    background-color: #787878;
+    cursor: not-allowed; /* Zeigt an, dass der Button deaktiviert ist */
+}

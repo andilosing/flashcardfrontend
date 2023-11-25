@@ -226,6 +226,11 @@
     background: khaki;
 }
 
+.card-content {
+    width: 100%;
+    display: flex;
+}
+
 
 
 
@@ -234,7 +239,7 @@
 
 
 .card-front, .card-back {
-    flex: 1; /* Ermöglicht eine gleichmäßige Aufteilung des verfügbaren Raums */
+    flex: 1; 
     text-align: center;
     padding: 5px;
     width: 100%;
@@ -247,12 +252,12 @@
     }
 
     .card-status {
-        margin-right: 10px; /* Fügt Abstand zwischen dem Symbol und dem Inhalt hinzu */
+        margin-right: 10px; 
     }
 
     .card-content {
         width: 100%;
-        /* Weitere Stile, falls erforderlich */
+        flex-direction: column;
     }
 
 

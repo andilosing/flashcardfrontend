@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from 'react-redux';
 import {
   Routes,
   Route,
@@ -17,10 +18,15 @@ import Login from "./features/login/components/Login";
 import Decks from "./features/decks/components/Decks"
 import Deck from "./features/decks/components/Deck"
 import AddDeck from "./features/decks/components/AddDeck";
+import Requests from "./features/requests/components/Requests";
+import ShareDeck from "./features/decks/components/ShareDeck";
+
+import { fetchRequestsAction } from "./features/requests/requestsAction"
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const [isNavActive, setIsNavActive] = useState(false);
 
   useEffect(() => {
@@ -43,6 +49,23 @@ function App() {
     }
   }, [navigate, location]);
 
+  useEffect(() => {
+    const tokenInfoString = localStorage.getItem("tokenInfo");
+    if (!tokenInfoString) {
+      return;
+    }
+  
+    dispatch(fetchRequestsAction());
+  
+    const notificationInterval = setInterval(() => {
+      console.log("Neue Notifications geholt.")
+      dispatch(fetchRequestsAction());
+    }, 60000); 
+  
+    return () => clearInterval(notificationInterval);
+  }, [dispatch]);
+  
+
   return (
     <div className="body-container">
       <NavBar isActive={isNavActive} onNavClick={() => setIsNavActive(false)} />
@@ -62,9 +85,13 @@ function App() {
             <Route path="/decks" element={<Decks />} />
             <Route path="/decks/add" element={<AddDeck />} />
             <Route path="/decks/:deck_id" element={<Deck />} />
+            <Route path="/decks/share-deck/:deck_id" element={<ShareDeck /> } /> 
             <Route path="/decks/:deck_id/addCard" element={<AddCard />} />
             <Route path="/decks/:deck_id/addCard/:card_id" element={<AddCard />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/requests" element={<Requests />} />
+            
+
           </Routes>
         </section>
       </section>

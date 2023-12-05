@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import { loginUserAction } from "../loginAction";
+import { fetchRequestsAction } from "../../requests/requestsAction";
 import styles from "./Login.css"
 
 function Login() {
@@ -24,6 +25,7 @@ function Login() {
     try {
       e.preventDefault();
       await dispatch(loginUserAction(username, password));
+      await dispatch(fetchRequestsAction());
       navigate("/")
     } catch (error) {
       console.log("Fehler beim einloggen");

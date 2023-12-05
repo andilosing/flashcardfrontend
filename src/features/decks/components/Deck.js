@@ -33,8 +33,9 @@ function Decks() {
 
     if (!deckDetails) {
       fetchCards();
-      console.log("hole karten für deck ");
+      
     }
+    
   }, [deck_id, dispatch, deckDetails]);
 
   const userCanEdit =
@@ -132,6 +133,16 @@ function Decks() {
     setAllSelected(!allSelected);
   };
 
+  const toggleCardStatus = async (card) => {
+    try {
+      const newStatus = card.is_active === null || card.is_active === false ? true : false;
+      await dispatch(setActiveStatusAction(deck_id, [card.card_id], newStatus));
+    } catch (error) {
+      console.error("Fehler beim Ändern des Kartenstatus:", error);
+    }
+  };
+  
+
   return (
     <div className="decks-cards-container">
       <div className="decks-cards-header-container">
@@ -224,6 +235,10 @@ function Decks() {
                         ? "inactive"
                         : "null-status"
                     }`}
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      toggleCardStatus(card);
+                    }}
                   >
                     {card.is_active === true ? (
                       <FaPlay />
@@ -233,7 +248,7 @@ function Decks() {
                       ""
                     )}
                   </div>
-                  <div class="card-content">
+                  <div className="card-content">
                     <div className="card-front">
                       <p>{card.front_content}</p>
                     </div>

@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getDecksAction, updateDeckStatusAction } from "../decksAction";
 import styles from "./Deck.css";
-import { FaPause, FaPlay, FaPlus } from "react-icons/fa";
+import { FaPause, FaPlay, FaPlus, FaEllipsisH } from "react-icons/fa";
 
 function Decks() {
   const decks = useSelector((state) => state.decks.decks);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [openMenuDeckId, setOpenMenuDeckId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +20,6 @@ function Decks() {
       }
     };
     fetchData();
-    console.log("hole decks info");
   }, []);
 
   const handleDeckClick = (deck_id) => {
@@ -35,8 +35,22 @@ function Decks() {
     navigate(`/decks/add`);
   };
 
+  const handleToggleMenu = (event, deckId) => {
+    event.stopPropagation(); 
+    setOpenMenuDeckId(openMenuDeckId === deckId ? null : deckId); 
+  };
+
+  const handleShareDeck = (event, deckId, isOwner) => {
+    event.stopPropagation();
+    if (isOwner) {
+      navigate(`/decks/share-deck/${deckId}`);
+      setOpenMenuDeckId(null); 
+    }
+  };
+
   return (
-    <div className="decks-container">
+    <div className={`decks-container ${openMenuDeckId ? "blur" : ""}`}>
+      {openMenuDeckId && <div className="overlay2" onClick={() => setOpenMenuDeckId(null)}></div>}
       <div className="decks-cards-header-container">
         <div className="decks-edit-buttons-container left"></div>
         <h3 className="decks-header">Decks</h3>
@@ -95,6 +109,19 @@ function Decks() {
               </div>
               <div className="deck-owner">{deck.owner_username}</div>
             </div>
+            {deck.is_owner && (
+              <div
+                className="deck-menu-button"
+                onClick={(event) => handleToggleMenu(event, deck.deck_id)}
+              >
+                <FaEllipsisH />
+              </div>
+            )}
+            {openMenuDeckId === deck.deck_id && deck.is_owner && (
+              <ul className="deck-menu-actions">
+                <li onClick={(event) => handleShareDeck(event, deck.deck_id, deck.is_owner)}>Deck teilen</li>
+              </ul>
+            )}
           </li>
         ))}
       </ul>

@@ -16,7 +16,6 @@ export const addCardAction = (deckId, frontText, backText) => async (dispatch) =
 
     } catch (error) {
       console.error("Fehler hinzufügen einer Karteikarte in Action", error);
-      throw Error
     }
   };
 
@@ -36,7 +35,6 @@ export const translateTextAction = async (text, sourceLang, targetLang)  => {
     
   } catch (error) {
     console.error("Fehler beim Übersetzen", error);
-      throw Error
   }
 }
 
@@ -49,7 +47,7 @@ export const getCardsForDeckAction = (deckId) => async (dispatch) => {
     dispatch(fetchCardsForDeck({deckId, cards, permissions}));
   } catch (error) {
     console.error("Fehler beim Abrufen der Eigenschaften:", error);
-    throw Error
+
   }
 };
 
@@ -69,7 +67,7 @@ export const updateCardAction = (deckId, cardId, frontText, backText) => async (
 
   } catch (error) {
     console.error("Fehler hinzufügen einer Karteikarte in Action", error);
-    throw Error
+
   }
 };
 
@@ -84,7 +82,6 @@ export const deleteCardsAction = (deckId, cardIds) => async (dispatch) => {
 
   } catch (error) {
     console.error("Error deleting cards in Action", error);
-    throw error; // It's generally better to throw the original error
   }
 };
 

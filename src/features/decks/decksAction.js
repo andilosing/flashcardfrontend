@@ -1,5 +1,5 @@
-import { getDecksApi, updateDeckStatusApi, addDeckApi } from "./decksApi";
-import { fetchDecks, updateDeckStatus } from "./decksSlice";
+import { getDecksApi, updateDeckStatusApi, addDeckApi, getDeckSharesApi, updateSharePermissionApi } from "./decksApi";
+import { fetchDecks, updateDeckStatus, storeDeckShares, updateSharePermission } from "./decksSlice";
 
 
 export const getDecksAction = () => async (dispatch) => {
@@ -8,7 +8,6 @@ export const getDecksAction = () => async (dispatch) => {
       dispatch(fetchDecks(decks));
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
-      throw Error
     }
   };
 
@@ -22,7 +21,6 @@ export const getDecksAction = () => async (dispatch) => {
 
     } catch (error) {
         console.error("Fehler beim Aktualisieren des Deck-Status:", error);
-        throw Error
         // Optional: Dispatch einer Fehler-Aktion, falls erforderlich
     }
 };
@@ -33,7 +31,30 @@ export const addDeckAction = (deckName) => async (dispatch) => {
       //dispatch(addDeck(newDeck));
   } catch (error) {
       console.error("Fehler beim Hinzufügen des Decks:", error);
-      throw Error
       // Optional: Dispatch einer Fehler-Aktion, falls erforderlich
+  }
+};
+
+export const getDeckSharesAction = (deckId) => async (dispatch) => {
+  try {        
+      // Abrufen der Informationen über die geteilten Decks und offene Anfragen
+      const { shares, openRequests } = await getDeckSharesApi(deckId);
+
+      // Speichern der Informationen im Redux Store
+      dispatch(storeDeckShares({ deckId, shares, openRequests }));
+  } catch (error) {
+      console.error("Fehler beim Abrufen der Informationen über geteilte Decks und offene Anfragen:", error);
+      // Optional: Dispatch einer Fehler-Aktion, falls erforderlich
+  }
+};
+
+export const updateSharePermissionAction = (shareId, deckId, newPermissionLevel) => async (dispatch) => {
+  try {
+    await updateSharePermissionApi(shareId, newPermissionLevel);
+    
+    dispatch(updateSharePermission({ shareId, deckId, newPermissionLevel }));
+
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Berechtigung:", error);
   }
 };

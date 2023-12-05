@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  FaChartBar,
   FaSchool,
   FaMedal,
-  FaMoneyCheck,
   FaDollarSign,
   FaStickyNote,
   FaApple,
-  FaBars
+  FaBars,
+  FaBell
 } from "react-icons/fa";
 import "./NavBar.css";
 function NavBar({onNavClick, isActive }) {
+
+  const requests = useSelector((state) => state.requests.requests);
+  const requestsCount = requests.length;
 
 
   const menuItems = [
     { icon: <FaSchool size="25px" />, title: "Lernen", link: "/" },
     { icon: <FaStickyNote size="25px" />, title: "Decks", link: "/decks"},
     { icon: <FaMedal size="25px" />, title: "Lernhistory", link: "/sessions" },
-    { icon: <FaMoneyCheck size="25px" />, title: "tbd", link: "/" },
+    { icon: <FaBell size="25px" />, title: "Mitteilungen", link: "/requests", notifications: requestsCount },
     { icon: <FaDollarSign size="25px" />, title: "tbd", link: "/" },
   ];
 
@@ -67,7 +70,7 @@ function NavBar({onNavClick, isActive }) {
         </div>
 
       <ul>
-        {menuItems.map(({ icon, title, link }, index) => (
+        {menuItems.map(({ icon, title, link, notifications } , index) => (
           <Link key={index} to={link}>
             <li
               className="nav-li-item"
@@ -78,7 +81,12 @@ function NavBar({onNavClick, isActive }) {
               }}
             >
               <div className={`nav-item ${clickedIndex === index ? "clicked" : ""}`}>
-                <span className="icon">{icon}</span>
+                <span className="icon">{icon}
+                {notifications > 0 && 
+                  <span className="notification-badge">{notifications}</span>
+                }
+                </span>
+                
                 <span className="title">{title}</span>
               </div>
             </li>

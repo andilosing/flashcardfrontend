@@ -70,7 +70,7 @@ export const setActiveStatusApi = async (cardIds, acitveStatus) => {
       }
   
     } catch (error) {
-      console.error("Fehler beim Löschen der Karten in der API:", error);
+      console.error("Fehler beim Setzten des Statuses der Karten in der API:", error);
       throw error;
     }
   };

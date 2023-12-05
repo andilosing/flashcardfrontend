@@ -2,6 +2,7 @@ import { baseFetch } from "../../api/api";
 
 const REQUESTS_ENDPOINT = "/requests/";
 
+
 export const addRequestApi = async (
   requestType,
   receiverId,
@@ -124,4 +125,54 @@ export const handleRequestResponseApi = async (requestId, action) => {
     throw error;
   }
 };
+
+// ---------------- Notifications-------------------------------
+
+const NOTIFICATIONS_ENDPOINT = "/notifications/";
+
+
+export const getNotificationsForUserApi = async () => {
+  try {
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const result = await baseFetch(NOTIFICATIONS_ENDPOINT, options);
+    console.log(result)
+
+    if (result.data && result.data.notifications) {
+      return result.data.notifications;
+    } else {
+      throw new Error("Notifications not found");
+    }
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benachrichtigungen in der API:", error);
+    throw error;
+  }
+};
+
+export const updateLastViewedAtForUserApi = async () => {
+  try {
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const result = await baseFetch(`${NOTIFICATIONS_ENDPOINT}`, options);
+
+    if (result.message !== "Last viewed at updated successfully") {
+      throw new Error(`Server responded with status: ${result.status}`);
+    }
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren des letzten Anzeigezeitpunkts in der API:", error);
+    throw error;
+  }
+};
+
+
 

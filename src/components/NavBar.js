@@ -14,7 +14,8 @@ import "./NavBar.css";
 function NavBar({onNavClick, isActive }) {
 
   const requests = useSelector((state) => state.requests.requests);
-  const requestsCount = requests.length;
+  const notifications = useSelector((state) => state.requests.notifications)
+  const requestsCount = requests.length + notifications.length;
 
 
   const menuItems = [

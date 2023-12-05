@@ -21,7 +21,7 @@ import AddDeck from "./features/decks/components/AddDeck";
 import Requests from "./features/requests/components/Requests";
 import ShareDeck from "./features/decks/components/ShareDeck";
 
-import { fetchRequestsAction } from "./features/requests/requestsAction"
+import { fetchRequestsAction, fetchNotificationsForUserAction } from "./features/requests/requestsAction"
 
 function App() {
   const navigate = useNavigate();
@@ -56,10 +56,12 @@ function App() {
     }
   
     dispatch(fetchRequestsAction());
+    dispatch(fetchNotificationsForUserAction());
   
     const notificationInterval = setInterval(() => {
       console.log("Neue Notifications geholt.")
       dispatch(fetchRequestsAction());
+      dispatch(fetchNotificationsForUserAction());
     }, 60000); 
   
     return () => clearInterval(notificationInterval);

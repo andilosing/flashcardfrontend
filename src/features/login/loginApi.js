@@ -22,7 +22,6 @@ export const loginUserApi = async (username, password) => {
 
         if (result.data && result.data.user) {
             if(result.data.token && result.data.expires_at){
-                console.log("Glückwunsch! Token mit ablaufdatum erhalten.")
                 const tokenInfo = {
                     token: result.data.token,
                     expires_at: result.data.expires_at

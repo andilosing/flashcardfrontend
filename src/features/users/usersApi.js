@@ -16,3 +16,18 @@ export const getAllUsersApi = async () => {
         throw error;
     }
 };
+
+export const getLoggedInUserApi = async () => {
+    try {
+        const options = { method: "GET" };
+        const result = await baseFetch(`${USERS_ENDPOINT}user`, options);
+        if (result.data && result.data.user) {
+            return result.data.user;
+        } else {
+            throw new Error("Users not found");
+        }
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Benutzer:", error);
+        throw error;
+    }
+};

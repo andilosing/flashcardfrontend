@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Routes,
   Route,
@@ -22,12 +22,14 @@ import Requests from "./features/requests/components/Requests";
 import ShareDeck from "./features/decks/components/ShareDeck";
 
 import { fetchRequestsAction, fetchNotificationsForUserAction } from "./features/requests/requestsAction"
+import { getLoggedInUserAction } from "./features/users/usersAction";
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [isNavActive, setIsNavActive] = useState(false);
+  const loggedInUser = useSelector((state) => state.users.user);
 
   useEffect(() => {
     if (location.pathname === "/login") {
@@ -54,15 +56,17 @@ function App() {
     if (!tokenInfoString) {
       return;
     }
+    if(!loggedInUser){
+      dispatch(getLoggedInUserAction())
+    }
   
     dispatch(fetchRequestsAction());
     dispatch(fetchNotificationsForUserAction());
   
     const notificationInterval = setInterval(() => {
-      console.log("Neue Notifications geholt.")
       dispatch(fetchRequestsAction());
       dispatch(fetchNotificationsForUserAction());
-    }, 60000); 
+    }, 3600000); 
   
     return () => clearInterval(notificationInterval);
   }, [dispatch]);

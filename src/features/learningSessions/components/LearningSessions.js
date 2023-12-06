@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getLearningSessionsAction, getLearningSessionsForOtherUserAction } from "../learningSessionsAction";
+import {
+  getLearningSessionsAction,
+  getLearningSessionsForOtherUserAction,
+} from "../learningSessionsAction";
 import styles from "./LearningSessions.css";
 import { FaCalendar, FaStopwatch, FaIdCard } from "react-icons/fa";
 import { getAllUsersAction } from "../../users/usersAction";
@@ -31,24 +34,24 @@ function LearningSessions() {
   }, [dispatch]);
 
   useEffect(() => {
-
+    const fetchOtherSessins = async () => {
+      await dispatch(getLearningSessionsForOtherUserAction(selectedUserId));
+    };
     if (selectedUserId && !(selectedUserId in otherUserSessions)) {
-      dispatch(getLearningSessionsForOtherUserAction(selectedUserId));
+      fetchOtherSessins();
     }
   }, [selectedUserId, dispatch, otherUserSessions]);
 
   useEffect(() => {
-
-    const sessions = selectedUserId && selectedUserId in otherUserSessions
-    ? otherUserSessions[selectedUserId]
-    : learningSessions;  
-
+    const sessions =
+      selectedUserId && selectedUserId in otherUserSessions
+        ? otherUserSessions[selectedUserId]
+        : learningSessions;
 
     if (!sessions || sessions.length === 0) {
       setStructuredSessions({});
       return;
     }
-    
 
     const sessionsByYearAndMonth = sessions.reduce((acc, session) => {
       const date = new Date(session.session_date);
@@ -61,7 +64,7 @@ function LearningSessions() {
       if (!acc[year][month]) acc[year][month] = [];
 
       acc[year][month].push({
-        date: `${day}. ${weekDay} `, 
+        date: `${day}. ${weekDay} `,
         time: session.total_learning_time_minutes,
         cards: session.total_cards_learned,
       });
@@ -72,12 +75,13 @@ function LearningSessions() {
     setStructuredSessions(sessionsByYearAndMonth);
   }, [learningSessions, otherUserSessions, selectedUserId]);
 
-  const sessionsToRender = selectedUserId && selectedUserId in otherUserSessions
-    ? otherUserSessions[selectedUserId]
-    : learningSessions;
+  const sessionsToRender =
+    selectedUserId && selectedUserId in otherUserSessions
+      ? otherUserSessions[selectedUserId]
+      : learningSessions;
 
-    const renderSessions = () => {
-      const sortedYears = Object.keys(structuredSessions).sort((a, b) => b - a);
+  const renderSessions = () => {
+    const sortedYears = Object.keys(structuredSessions).sort((a, b) => b - a);
 
     return sortedYears.map((year) => (
       <div key={year} className="sessions-year-data-container">
@@ -108,22 +112,25 @@ function LearningSessions() {
 
   return (
     <div className="learning-sessions-container">
-        <h3 className="sessions-header">Lernhistory</h3>
-        <select onChange={(e) => setSelectedUserId(e.target.value)} value={selectedUserId}
-        className="share-deck-form input learningSessions">
-          <option value="">Ich</option>
-          {users.map((user) => (
-            <option key={user.user_id} value={user.user_id}>
-              {user.username}
-            </option>
-          ))}
-        </select>
-        <div className="sessions-list-container">
-      {sessionsToRender && sessionsToRender.length > 0 ? (
-        renderSessions()
-      ) : (
-        <p>Keine Lernsessions gefunden.</p>
-      )}
+      <h3 className="sessions-header">Lernhistory</h3>
+      <select
+        onChange={(e) => setSelectedUserId(e.target.value)}
+        value={selectedUserId}
+        className="share-deck-form input learningSessions"
+      >
+        <option value="">Ich</option>
+        {users.map((user) => (
+          <option key={user.user_id} value={user.user_id}>
+            {user.username}
+          </option>
+        ))}
+      </select>
+      <div className="sessions-list-container">
+        {sessionsToRender && sessionsToRender.length > 0 ? (
+          renderSessions()
+        ) : (
+          <p>Keine Lernsessions gefunden.</p>
+        )}
       </div>
     </div>
   );

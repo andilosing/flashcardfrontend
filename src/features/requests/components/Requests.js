@@ -15,13 +15,11 @@ function Requests() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Requests and Notifications loaded in component");
     dispatch(fetchRequestsAction());
     dispatch(fetchNotificationsForUserAction());
 
     return () => {
       if(notifications && notifications.length > 0){
-        console.log("last viewed auf jetzt gesetzt")
       dispatch(updateLastViewedAtForUserAction());
       }
     };
@@ -42,6 +40,10 @@ function Requests() {
   return (
     <div className="requests-container">
       <h3 className="sessions-header">Mitteilungen</h3>
+
+      {(!notifications || notifications.length === 0) && (!requests || requests.length === 0) && 
+      <p>Keine neuen Mitteilungen</p>
+      }
 
       {notifications && notifications.length > 0 && (
         <>

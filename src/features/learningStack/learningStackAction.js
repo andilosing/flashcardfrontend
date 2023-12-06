@@ -11,7 +11,6 @@ export const getLearningStackAction = () => async (dispatch) => {
       await  dispatch(updateLearningStackStatus(cardIdsInLearningStack));
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
-      throw Error
     }
   };
 
@@ -32,7 +31,6 @@ export const getLearningStackAction = () => async (dispatch) => {
       dispatch(updatedLearningCard(updatedCardId));
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
-      throw Error
     }
   };
 
@@ -47,6 +45,5 @@ export const getLearningStackAction = () => async (dispatch) => {
   
     } catch (error) {
       console.error("Error deleting cards in Action", error);
-      throw error; // It's generally better to throw the original error
     }
   };

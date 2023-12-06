@@ -141,7 +141,7 @@ export const getNotificationsForUserApi = async () => {
     };
 
     const result = await baseFetch(NOTIFICATIONS_ENDPOINT, options);
-    console.log(result)
+
 
     if (result.data && result.data.notifications) {
       return result.data.notifications;

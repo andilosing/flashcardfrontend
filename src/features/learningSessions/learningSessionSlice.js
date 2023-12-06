@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     learningSessionsList: [],
+    otherUserLearningSessions: {}
 }
 
 const learningSessionsSlice = createSlice({
@@ -11,8 +12,12 @@ const learningSessionsSlice = createSlice({
         fetchLearningSessions: (state, action) => {
             state.learningSessionsList = action.payload
         },
+        fetchLearningSessionsForOtherUser: (state, action) => {
+            const { userId, sessions } = action.payload;
+            state.otherUserLearningSessions[userId] = sessions;
+          },
     }
 })
 
-export const { fetchLearningSessions }  = learningSessionsSlice.actions
+export const { fetchLearningSessions, fetchLearningSessionsForOtherUser }  = learningSessionsSlice.actions
 export default learningSessionsSlice.reducer

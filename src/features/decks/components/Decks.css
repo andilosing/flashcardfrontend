@@ -154,7 +154,7 @@
   right: 10px;
   cursor: pointer;
   transform: rotate(50%, 50%);
-  z-index: 100;
+  z-index: 21;
 }
 
 .deck-menu-actions {
@@ -169,7 +169,7 @@
   padding: 5px;
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 19;
 }
 
 .deck-menu-actions li {

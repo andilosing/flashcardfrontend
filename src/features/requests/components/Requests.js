@@ -47,9 +47,8 @@ function Requests() {
 
       {notifications && notifications.length > 0 && (
         <>
-          <h4 className="sessions-year-header">Benachrichtigungen</h4>
+          <h4 className="sessions-year-header">Neue Aktivitäten</h4>
           <ul className="notifications-list">
-            {/* Hier können Sie Benachrichtigungen rendern */}
             {notifications.map((notification, index) => (
               <li key={index} className="sessions-data">
                 <p className="sessions-data-item first">    <FaUser /> {notification.username} </p> 

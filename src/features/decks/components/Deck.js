@@ -26,6 +26,13 @@ function Decks() {
 
   const [allSelected, setAllSelected] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortField, setSortField] = useState("created_at");
+  const [sortOrder, setSortOrder] = useState("desc");
+
+  const [filteredAndSortedCards, setFilteredAndSortedCards] =
+    useState(cardsInDecks);
+
   useEffect(() => {
     const fetchCards = async () => {
       await dispatch(getCardsForDeckAction(deck_id));
@@ -33,9 +40,7 @@ function Decks() {
 
     if (!deckDetails) {
       fetchCards();
-      
     }
-    
   }, [deck_id, dispatch, deckDetails]);
 
   const userCanEdit =
@@ -92,6 +97,7 @@ function Decks() {
   };
 
   const handleDeleteModeToggle = () => {
+    console.log(cardsInDecks);
     setDeleteMode(!deleteMode);
     setSelectedCards([]);
     setInactiveStatusMode(false);
@@ -135,13 +141,77 @@ function Decks() {
 
   const toggleCardStatus = async (card) => {
     try {
-      const newStatus = card.is_active === null || card.is_active === false ? true : false;
+      const newStatus =
+        card.is_active === null || card.is_active === false ? true : false;
       await dispatch(setActiveStatusAction(deck_id, [card.card_id], newStatus));
     } catch (error) {
       console.error("Fehler beim Ändern des Kartenstatus:", error);
     }
   };
-  
+
+  const filterCardsByText = (query) => {
+    if (!query) return cardsInDecks;
+    const searchQuery = query ? query.toString().toLowerCase() : "";
+    const cardsCopy = [...cardsInDecks];
+    return cardsCopy.filter(
+      (card) =>
+        card.front_content.toLowerCase().includes(searchQuery) ||
+        card.back_content.toLowerCase().includes(searchQuery)
+    );
+  };
+
+  const sortCards = (cards) => {
+    const cardsCopy = [...cards];
+    return cardsCopy.sort((a, b) => {
+      let valueA = a[sortField];
+      let valueB = b[sortField];
+
+      if (sortField === "front_content" || sortField === "back_content") {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+      if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+
+  useEffect(() => {
+    const filteredCards = filterCardsByText(searchQuery);
+    const sortedCards = sortCards(filteredCards);
+    setFilteredAndSortedCards(sortedCards);
+  }, [searchQuery, sortField, sortOrder, cardsInDecks]);
+
+  function highlightMatch(text, query) {
+    const matchIndex = text.toLowerCase().indexOf(query.toLowerCase());
+    if (matchIndex === -1) {
+      return <span>{text}</span>;
+    }
+    const beforeMatch = text.substring(0, matchIndex);
+    const matchText = text.substring(matchIndex, matchIndex + query.length);
+    const afterMatch = text.substring(matchIndex + query.length);
+    return (
+      <span>
+        {beforeMatch}
+        <span style={{ backgroundColor: "skyblue" }}>{matchText}</span>
+        {afterMatch}
+      </span>
+    );
+  }
+
+
+  function highlightAndFormatText(text, query) {
+    return text.split('\n').map((line, index) => {
+      const highlightedLine = highlightMatch(line, query);
+      return (
+        <React.Fragment key={index}>
+          {highlightedLine}
+          {index < text.split('\n').length - 1 ? <br/> : ''}
+        </React.Fragment>
+      );
+    });
+  }
 
   return (
     <div className="decks-cards-container">
@@ -187,6 +257,36 @@ function Decks() {
           )}
         </div>
       </div>
+
+      <div className="decks-search-filter-container">
+        <input
+          type="text"
+          placeholder="Suche..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+        <div className="sort-options">
+          <select
+            value={sortField}
+            onChange={(e) => setSortField(e.target.value)}
+            className="select-filter"
+          >
+            <option value="created_at">Erstellt</option>
+            <option value="updated_at">Updated</option>
+            <option value="front_content">Deutsch</option>
+            <option value="back_content">Russisch</option>
+          </select>
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="select-filter"
+          >
+            <option value="asc">Aufst.</option>
+            <option value="desc">Abst.</option>
+          </select>
+        </div>
+      </div>
       <ul className="decks-cards-list">
         {deleteMode || inactiveStatusMode || activeStatusMode ? (
           <button
@@ -197,8 +297,8 @@ function Decks() {
           </button>
         ) : null}
         <div className="deck-cards-list-items-container">
-          {cardsInDecks &&
-            cardsInDecks
+          {filteredAndSortedCards &&
+            filteredAndSortedCards
               .filter((card) => {
                 // Filter basierend auf dem Modus
                 if (inactiveStatusMode) {
@@ -236,7 +336,7 @@ function Decks() {
                         : "null-status"
                     }`}
                     onClick={(e) => {
-                      e.stopPropagation(); 
+                      e.stopPropagation();
                       toggleCardStatus(card);
                     }}
                   >
@@ -250,10 +350,10 @@ function Decks() {
                   </div>
                   <div className="card-content">
                     <div className="card-front">
-                      <p>{card.front_content}</p>
+                    {highlightAndFormatText(card.front_content, searchQuery)}
                     </div>
                     <div className="card-back">
-                      <p>{card.back_content}</p>
+                    {highlightAndFormatText(card.back_content, searchQuery)}
                     </div>
                   </div>
                 </li>

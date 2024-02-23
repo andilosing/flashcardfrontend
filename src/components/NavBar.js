@@ -23,7 +23,7 @@ function NavBar({onNavClick, isActive }) {
     { icon: <FaStickyNote size="25px" />, title: "Decks", link: "/decks"},
     { icon: <FaMedal size="25px" />, title: "Lernhistory", link: "/sessions" },
     { icon: <FaBell size="25px" />, title: "Mitteilungen", link: "/requests", notifications: requestsCount },
-    { icon: <FaDollarSign size="25px" />, title: "tbd", link: "/" },
+
   ];
 
 

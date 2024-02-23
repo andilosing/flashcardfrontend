@@ -69,7 +69,7 @@ function App() {
     }, 3600000); 
   
     return () => clearInterval(notificationInterval);
-  }, [dispatch]);
+  }, [dispatch, location]);
   
 
   return (

@@ -58,25 +58,25 @@ function LearningCard({ card, onCardUpdated, onUpdateDifficulty }) {
             className="difficulty-button button easy"
             onClick={() => handleDifficulty(1)}
           >
-            +3
+            sehr gut
           </button>
           <button
             className="difficulty-button button good"
             onClick={() => handleDifficulty(2)}
           >
-            +1
+            gut
           </button>
           <button
             className="difficulty-button button mid"
             onClick={() => handleDifficulty(3)}
           >
-            -1
+            mittel
           </button>
           <button
             className="difficulty-button button hard"
             onClick={() => handleDifficulty(4)}
           >
-            =1
+            schlecht
           </button>
         </div>
       )}

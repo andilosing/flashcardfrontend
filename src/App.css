@@ -31,6 +31,7 @@ ul{
   flex-grow: 1; /* Lässt .main den verfügbaren Platz ausfüllen */
   position: relative;
   width: calc(100% - 250px);
+  
   left: 250px;
   transition: .5s;
   height: 100%; /* Stellt sicher, dass die Höhe sich an den verfügbaren Platz anpasst */
@@ -43,7 +44,7 @@ ul{
   flex-direction: column;
   padding: 15px;
   width: 100%;
-  max-height: 100%;
+  max-height:  calc(100vh - 60px);
   overflow: auto;
 }
 

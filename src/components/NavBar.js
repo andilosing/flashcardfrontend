@@ -6,7 +6,7 @@ import {
   FaMedal,
   FaDollarSign,
   FaStickyNote,
-  FaApple,
+  FaBtc,
   FaBars,
   FaBell
 } from "react-icons/fa";
@@ -61,9 +61,9 @@ function NavBar({onNavClick, isActive }) {
       <div className="nav-header">
       <div className="logo">
         <span className="icon">
-          <FaApple size="30px" />
+          <FaBtc size="30px" />
         </span>
-        <span className="title"> Logo</span>
+        <span className="title"></span>
       </div>
       <div className={"menu-bar"} onClick={() => {onNavClick()}}>
          <FaBars size="30px" />

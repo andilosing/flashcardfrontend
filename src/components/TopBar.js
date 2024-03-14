@@ -11,14 +11,14 @@ function TopBar({ isActive, onNavBarClick }) {
   };
 
   const getLearningTimeColor = (minutes) => {
-    if (minutes < 30) return "salmon";
-    if (minutes > 60) return "lightgreen";
+    if (minutes < 20) return "salmon";
+    if (minutes > 30) return "lightgreen";
     return "khaki";
   };
 
   const getStreakColor = (days) => {
-    if (days < 15) return "salmon";
-    if (days > 30) return "khaki";
+    if (days < 10) return "salmon";
+    if (days > 20) return "khaki";
     return "lightgreen";
   };
 

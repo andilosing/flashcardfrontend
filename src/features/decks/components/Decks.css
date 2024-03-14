@@ -54,6 +54,7 @@
   justify-content: center;
   width: 100%;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .deck-count {
@@ -61,6 +62,8 @@
   border-radius: 5px;
   font-weight: 700;
   margin: 0 5px;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 .decks-list-item .deck-count.card {
@@ -72,6 +75,10 @@
 }
 
 .decks-list-item .deck-count.due-cards {
+  background-color: skyblue;
+}
+
+.decks-list-item .deck-count.queue-cards {
   background-color: skyblue;
 }
 
@@ -190,6 +197,14 @@
   z-index: 10;
 }
 
+@media (max-width: 500px) {
+  .deck-count-container {
+    justify-content: space-around; 
+  }
 
+  .deck-count {
+    flex: 0 0 45%; 
+  }
+}
 
 

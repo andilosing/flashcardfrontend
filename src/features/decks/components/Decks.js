@@ -73,13 +73,16 @@ function Decks() {
             <div className="deck-name">{deck.name}</div>
             <div className="deck-count-container">
               <div className="deck-count card">
-                Karteikarten: {deck.total_card_count}
+                Karten: {deck.total_card_count}
               </div>
               <div className="deck-count learning-stack">
-                lernen: {deck.learning_stack_count}
+                Lernen: {deck.learning_stack_count}
               </div>
               <div className="deck-count due-cards">
-                fällig: {deck.due_cards_count}
+                Fällig: {deck.due_cards_count}
+              </div>
+              <div className="deck-count queue-cards">
+                Queue: {deck.queue_cards_count}
               </div>
             </div>
             <div className="deck-status-cards-percentage-container">

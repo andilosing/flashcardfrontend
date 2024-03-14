@@ -47,7 +47,7 @@ function TopBar({ isActive, onNavBarClick }) {
               size="25px"
               color={getStreakColor(loggedInUser.learnignStreakInDays)}
             />
-            <span>{loggedInUser.learnignStreakInDays} days</span>
+            <span>{loggedInUser.learnignStreakInDays} Tage</span>
           </div>
         )}
       </div>

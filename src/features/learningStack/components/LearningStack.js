@@ -109,70 +109,72 @@ function LearningStack() {
           </div>
 
           <div className="start-learning-container">
-          <div className="start-learning-input-container">
-            <div className="cards-amount-input">
-            <label htmlFor="fontAmount" className="input-label">
-              Deutsche Karten
-            </label>
-            <input
-            className="amount-input"
-              id="fontAmount"
-              type="number"
-              value={germanCardsCount}
-              onChange={(e) => setGermanCardsCount(Number(e.target.value))}
-              placeholder="Anzahl deutscher Karten"
-            />
+            <div className="start-learning-input-container">
+              <div className="cards-amount-input">
+                <label htmlFor="fontAmount" className="input-label">
+                  Deutsche Karten
+                </label>
+                <input
+                  className="amount-input"
+                  id="fontAmount"
+                  type="number"
+                  value={germanCardsCount}
+                  onChange={(e) => setGermanCardsCount(Number(e.target.value))}
+                  placeholder="Anzahl deutscher Karten"
+                />
+              </div>
+              <div className="cards-amount-input">
+                <label htmlFor="backAmount" className="input-label">
+                  Russische Karten
+                </label>
+                <input
+                  className="amount-input"
+                  id="backAmout"
+                  type="number"
+                  value={russianCardsCount}
+                  onChange={(e) => setRussianCardsCount(Number(e.target.value))}
+                  placeholder="Anzahl russischer Karten"
+                />
+              </div>
             </div>
-            <div className="cards-amount-input">
-            <label htmlFor="backAmount" className="input-label">
-              Russische Karten
-            </label>
-            <input
-            className="amount-input"
-              type="backAmout"
-              value={russianCardsCount}
-              onChange={(e) => setRussianCardsCount(Number(e.target.value))}
-              placeholder="Anzahl russischer Karten"
-            />
-          </div>
-          </div>
 
-          <button
-            className="start-learing-button button"
-            onClick={handleStartLearning}
-          >
-            Lernen beginnen
-          </button>
-        </div>
+            <button
+              className="start-learing-button button"
+              onClick={handleStartLearning}
+            >
+              Lernen beginnen
+            </button>
+          </div>
         </div>
       ) : (
         <div className="start-learning-container">
           <div className="start-learning-input-container">
             <div className="cards-amount-input">
-            <label htmlFor="fontAmount" className="input-label">
-              Deutsche Karten
-            </label>
-            <input
-            className="amount-input"
-              id="fontAmount"
-              type="number"
-              value={germanCardsCount}
-              onChange={(e) => setGermanCardsCount(Number(e.target.value))}
-              placeholder="Anzahl deutscher Karten"
-            />
+              <label htmlFor="fontAmount" className="input-label">
+                Deutsche Karten
+              </label>
+              <input
+                className="amount-input"
+                id="fontAmount"
+                type="number"
+                value={germanCardsCount}
+                onChange={(e) => setGermanCardsCount(Number(e.target.value))}
+                placeholder="Anzahl deutscher Karten"
+              />
             </div>
             <div className="cards-amount-input">
-            <label htmlFor="backAmount" className="input-label">
-              Russische Karten
-            </label>
-            <input
-            className="amount-input"
-              type="backAmout"
-              value={russianCardsCount}
-              onChange={(e) => setRussianCardsCount(Number(e.target.value))}
-              placeholder="Anzahl russischer Karten"
-            />
-          </div>
+              <label htmlFor="backAmount" className="input-label">
+                Russische Karten
+              </label>
+              <input
+                className="amount-input"
+                id="backAmout"
+                type="number"
+                value={russianCardsCount}
+                onChange={(e) => setRussianCardsCount(Number(e.target.value))}
+                placeholder="Anzahl russischer Karten"
+              />
+            </div>
           </div>
 
           <button

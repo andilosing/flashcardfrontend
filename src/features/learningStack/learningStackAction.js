@@ -1,24 +1,42 @@
-import { getLearningStackApi, updateLearningCardApi, setActiveStatusApi } from "./learningStackApi";
-import { fetchLearningStack, updatedLearningCard  } from "./learningStackSlice";
-import { updateLearningStackStatus, setActiveStatus } from "../cards/cardsSlice";
+import {
+  getLearningStackApi,
+  updateLearningCardApi,
+  setActiveStatusApi,
+} from "./learningStackApi";
+import { fetchLearningStack, updatedLearningCard } from "./learningStackSlice";
+import {
+  updateLearningStackStatus,
+  setActiveStatus,
+} from "../cards/cardsSlice";
 
+export const getLearningStackAction =
+  (germanCardsCount, russianCardsCount) => async (dispatch) => {
+    try {
+      if (typeof germanCardsCount !== "number" || germanCardsCount < 0) {
+        throw new Error("Ungültige Anzahl deutscher Karten");
+      }
+      if (typeof russianCardsCount !== "number" || russianCardsCount < 0) {
+        throw new Error("Ungültige Anzahl russischer Karten");
+      }
 
-export const getLearningStackAction = () => async (dispatch) => {
-    try {        
-      const learningStack = await getLearningStackApi()
+      const learningStack = await getLearningStackApi(
+        germanCardsCount,
+        russianCardsCount
+      );
       await dispatch(fetchLearningStack(learningStack));
-      const cardIdsInLearningStack = learningStack.map(card => card.card_id);
-      await  dispatch(updateLearningStackStatus(cardIdsInLearningStack));
+      const cardIdsInLearningStack = learningStack.map((card) => card.card_id);
+      await dispatch(updateLearningStackStatus(cardIdsInLearningStack));
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
     }
   };
 
-  export const updateLearningCardAction = (progress_id, status, difficulty) => async (dispatch) => {
-    try {   
-      if(!progress_id || status === "" || !difficulty) {
-        throw new Error ("Daten fehlen in Action")
-      }    
+export const updateLearningCardAction =
+  (progress_id, status, difficulty) => async (dispatch) => {
+    try {
+      if (!progress_id || status === "" || !difficulty) {
+        throw new Error("Daten fehlen in Action");
+      }
       if (difficulty < 1 || difficulty > 4) {
         throw new Error("Ungültige Schwierigkeit in Action");
       }
@@ -27,22 +45,30 @@ export const getLearningStackAction = () => async (dispatch) => {
         throw new Error("Ungültiger Status in Action");
       }
 
-      const updatedCardId = await updateLearningCardApi(progress_id, status, difficulty)
+      const updatedCardId = await updateLearningCardApi(
+        progress_id,
+        status,
+        difficulty
+      );
       dispatch(updatedLearningCard(updatedCardId));
     } catch (error) {
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
     }
   };
 
-  export const setActiveStatusAction = (deckId, cardIds, activeStatus) => async (dispatch) => {
-    try {        
-      if(!deckId || cardIds.length === 0 || (activeStatus !== true && activeStatus !== false)){
-        throw new Error("Missing data to delete cards in Action")
+export const setActiveStatusAction =
+  (deckId, cardIds, activeStatus) => async (dispatch) => {
+    try {
+      if (
+        !deckId ||
+        cardIds.length === 0 ||
+        (activeStatus !== true && activeStatus !== false)
+      ) {
+        throw new Error("Missing data to delete cards in Action");
       }
-  
+
       await setActiveStatusApi(cardIds, activeStatus);
-      dispatch(setActiveStatus({deckId, cardIds, activeStatus}));
-  
+      dispatch(setActiveStatus({ deckId, cardIds, activeStatus }));
     } catch (error) {
       console.error("Error deleting cards in Action", error);
     }

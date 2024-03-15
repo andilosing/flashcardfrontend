@@ -5,7 +5,14 @@
     width: 100%;
   }
 
+  .start-learning-container{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
   .start-learing-button {
+    margin-top: 15px;
     flex: 1;
     background-color: #787878;
   }
@@ -97,4 +104,20 @@
 
 }
 
+.cards-amount-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
 
+.amount-input {
+  width: 100%; 
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid #4f4f4f;
+  color: white;
+  outline: none;
+  text-align: center;
+}

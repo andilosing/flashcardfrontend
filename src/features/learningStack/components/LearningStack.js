@@ -16,12 +16,16 @@ function LearningStack() {
   const [goodCount, setGoodCount] = useState(0);
   const [midCount, setMidCount] = useState(0);
   const [hardCount, setHardCount] = useState(0);
+  const [germanCardsCount, setGermanCardsCount] = useState(8);
+  const [russianCardsCount, setRussianCardsCount] = useState(2);
 
   const handleStartLearning = async () => {
     try {
       setDoneCards(0);
       setCardsAmount(0);
-      await dispatch(getLearningStackAction());    
+      await dispatch(
+        getLearningStackAction(germanCardsCount, russianCardsCount)
+      );
       await resetDifficultyCounters();
     } catch (error) {
       console.log("Fehler beim Laden des Lernstapels");
@@ -75,16 +79,62 @@ function LearningStack() {
         </>
       ) : doneCards > 0 ? (
         <div className="fineshed-learning-stack-container">
-          <div className="finished-header">Stapel erfolgreich Abgeschlossen</div>
+          <div className="finished-header">
+            Stapel erfolgreich Abgeschlossen
+          </div>
           <div className="learning-progress">
             Karteikarten:{doneCards}/{cardsAmount}
           </div>
 
           <div className="difficulty-counter-container-fineshed">
-            <span className="finished-difficulty-description"> Leicht:<span className="difficulty-counter easy">{easyCount} </span></span>
-            <span className="finished-difficulty-description"> Gut:<span className="difficulty-counter good">{goodCount} </span></span>
-            <span className="finished-difficulty-description"> Mittel:<span className="difficulty-counter mid"> {midCount} </span></span>
-            <span className="finished-difficulty-description"> Schwer:<span className="difficulty-counter hard">{hardCount} </span></span>
+            <span className="finished-difficulty-description">
+              {" "}
+              Leicht:
+              <span className="difficulty-counter easy">{easyCount} </span>
+            </span>
+            <span className="finished-difficulty-description">
+              {" "}
+              Gut:<span className="difficulty-counter good">{goodCount} </span>
+            </span>
+            <span className="finished-difficulty-description">
+              {" "}
+              Mittel:
+              <span className="difficulty-counter mid"> {midCount} </span>
+            </span>
+            <span className="finished-difficulty-description">
+              {" "}
+              Schwer:
+              <span className="difficulty-counter hard">{hardCount} </span>
+            </span>
+          </div>
+
+          <div className="start-learning-container">
+          <div className="start-learning-input-container">
+            <div className="cards-amount-input">
+            <label htmlFor="fontAmount" className="input-label">
+              Deutsche Karten
+            </label>
+            <input
+            className="amount-input"
+              id="fontAmount"
+              type="number"
+              value={germanCardsCount}
+              onChange={(e) => setGermanCardsCount(Number(e.target.value))}
+              placeholder="Anzahl deutscher Karten"
+            />
+            </div>
+            <div className="cards-amount-input">
+            <label htmlFor="backAmount" className="input-label">
+              Russische Karten
+            </label>
+            <input
+            className="amount-input"
+              type="backAmout"
+              value={russianCardsCount}
+              onChange={(e) => setRussianCardsCount(Number(e.target.value))}
+              placeholder="Anzahl russischer Karten"
+            />
+          </div>
           </div>
 
           <button
@@ -94,13 +144,44 @@ function LearningStack() {
             Lernen beginnen
           </button>
         </div>
+        </div>
       ) : (
-        <button
-          className="start-learing-button button"
-          onClick={handleStartLearning}
-        >
-          Lernen beginnen
-        </button>
+        <div className="start-learning-container">
+          <div className="start-learning-input-container">
+            <div className="cards-amount-input">
+            <label htmlFor="fontAmount" className="input-label">
+              Deutsche Karten
+            </label>
+            <input
+            className="amount-input"
+              id="fontAmount"
+              type="number"
+              value={germanCardsCount}
+              onChange={(e) => setGermanCardsCount(Number(e.target.value))}
+              placeholder="Anzahl deutscher Karten"
+            />
+            </div>
+            <div className="cards-amount-input">
+            <label htmlFor="backAmount" className="input-label">
+              Russische Karten
+            </label>
+            <input
+            className="amount-input"
+              type="backAmout"
+              value={russianCardsCount}
+              onChange={(e) => setRussianCardsCount(Number(e.target.value))}
+              placeholder="Anzahl russischer Karten"
+            />
+          </div>
+          </div>
+
+          <button
+            className="start-learing-button button"
+            onClick={handleStartLearning}
+          >
+            Lernen beginnen
+          </button>
+        </div>
       )}
     </div>
   );

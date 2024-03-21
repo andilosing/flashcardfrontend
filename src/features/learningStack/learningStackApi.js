@@ -2,10 +2,10 @@ import { baseFetch } from "../../api/api";
 
 const ENDPOINT = "/learning-stack/";
 
-export const getLearningStackApi = async (germanCardsCount, russianCardsCount) => {
+export const getLearningStackApi = async (germanCardsCount, russianCardsCount, fetchAllDue) => {
     try {
         const options = { method: "GET" };
-        const result = await baseFetch(`/learning-stack/?frontCardsCount=${germanCardsCount}&backCardsCount=${russianCardsCount}`, options);
+        const result = await baseFetch(`/learning-stack/?frontCardsCount=${germanCardsCount}&backCardsCount=${russianCardsCount}&fetchAllDue=${fetchAllDue}`, options);
         if (result.data && result.data.learningStack) {
             return result.data.learningStack;
         } else {

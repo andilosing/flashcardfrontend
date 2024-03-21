@@ -10,7 +10,7 @@ import {
 } from "../cards/cardsSlice";
 
 export const getLearningStackAction =
-  (germanCardsCount, russianCardsCount) => async (dispatch) => {
+  (germanCardsCount, russianCardsCount, fetchAllDue) => async (dispatch) => {
     try {
       if (typeof germanCardsCount !== "number" || germanCardsCount < 0) {
         throw new Error("Ungültige Anzahl deutscher Karten");
@@ -21,7 +21,8 @@ export const getLearningStackAction =
 
       const learningStack = await getLearningStackApi(
         germanCardsCount,
-        russianCardsCount
+        russianCardsCount,
+        fetchAllDue
       );
       await dispatch(fetchLearningStack(learningStack));
       const cardIdsInLearningStack = learningStack.map((card) => card.card_id);

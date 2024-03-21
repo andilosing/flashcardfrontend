@@ -16,15 +16,17 @@ function LearningStack() {
   const [goodCount, setGoodCount] = useState(0);
   const [midCount, setMidCount] = useState(0);
   const [hardCount, setHardCount] = useState(0);
-  const [germanCardsCount, setGermanCardsCount] = useState(8);
-  const [russianCardsCount, setRussianCardsCount] = useState(2);
+  const [germanCardsCount, setGermanCardsCount] = useState(10);
+  const [russianCardsCount, setRussianCardsCount] = useState(0);
+  const [fetchAllDue, setFetchAllDue] = useState(false);
 
   const handleStartLearning = async () => {
     try {
       setDoneCards(0);
       setCardsAmount(0);
+      setFetchAllDue(false)
       await dispatch(
-        getLearningStackAction(germanCardsCount, russianCardsCount)
+        getLearningStackAction(germanCardsCount, russianCardsCount, fetchAllDue)
       );
       await resetDifficultyCounters();
     } catch (error) {
@@ -136,6 +138,17 @@ function LearningStack() {
                   placeholder="Anzahl russischer Karten"
                 />
               </div>
+              <div className="toggle-slider-container">
+              <label className="toggle-slider">
+                <input
+                  type="checkbox"
+                  checked={fetchAllDue}
+                  onChange={(e) => setFetchAllDue(e.target.checked)}
+                />
+                <span className="slider round"></span>
+              </label>
+              <span className="slider-text">Alle fälligen Karten holen</span>
+            </div>
             </div>
 
             <button
@@ -174,6 +187,17 @@ function LearningStack() {
                 onChange={(e) => setRussianCardsCount(Number(e.target.value))}
                 placeholder="Anzahl russischer Karten"
               />
+            </div>
+            <div className="toggle-slider-container">
+              <label className="toggle-slider">
+                <input
+                  type="checkbox"
+                  checked={fetchAllDue}
+                  onChange={(e) => setFetchAllDue(e.target.checked)}
+                />
+                <span className="slider round"></span>
+              </label>
+              <span className="slider-text">Alle fälligen Karten holen</span>
             </div>
           </div>
 

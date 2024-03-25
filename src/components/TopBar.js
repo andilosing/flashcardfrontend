@@ -5,22 +5,30 @@ import "./TopBar.css";
 
 function TopBar({ isActive, onNavBarClick }) {
   const loggedInUser = useSelector((state) => state.users.user);
+  const preferences = useSelector((state) => state.preferences.preferences);
+
 
   const getInitials = (username) => {
     return username ? username.substring(0, 2).toUpperCase() : "";
   };
 
   const getLearningTimeColor = (minutes) => {
-    if (minutes < 20) return "salmon";
-    if (minutes > 30) return "lightgreen";
-    return "khaki";
-  };
+    if (!preferences) return "grey"; 
+    const { average_learning_time_good, average_learning_time_bad } = preferences;
+    if (minutes >= average_learning_time_good) return "lightgreen"; 
+    if (minutes <= average_learning_time_bad) return "salmon"; 
+    return "khaki"; 
+};
 
-  const getStreakColor = (days) => {
-    if (days < 10) return "salmon";
-    if (days > 20) return "khaki";
-    return "lightgreen";
-  };
+const getStreakColor = (days) => {
+    if (!preferences) return "grey"; 
+    const { learning_streak_good, learning_streak_bad } = preferences;
+    if (days >= learning_streak_good) return "lightgreen"; 
+    if (days <= learning_streak_bad) return "salmon"; 
+    return "khaki";
+};
+
+
 
   return (
     <section className={`topbar ${isActive ? "active" : ""}`}>

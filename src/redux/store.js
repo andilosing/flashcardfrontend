@@ -7,6 +7,7 @@ import learningSessionsReducer from "../features/learningSessions/learningSessio
 import decksReducer from "../features/decks/decksSlice"
 import requestsReducer from "../features/requests/requestsSlice"
 import usersReducer from "../features/users/usersSlice"
+import preferencesReducer from "../features/preferences/preferencesSlice"
 
 const combinedReducer = combineReducers({
     learningStack: learningStackReducer,
@@ -14,7 +15,9 @@ const combinedReducer = combineReducers({
     learningSessions: learningSessionsReducer,
     decks: decksReducer,
     requests: requestsReducer,
-    users: usersReducer
+    users: usersReducer,
+    preferences: preferencesReducer
+
 });
 
 const store = configureStore({

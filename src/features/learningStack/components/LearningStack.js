@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getLearningStackAction } from "../learningStackAction";
+import { getPreferencesAction } from "../../preferences/preferencesAction";
+import { updateLastLearningDay, updateLearningStreak } from "../../users/usersSlice";
 import LearningCard from "./LearningCard";
 import styles from "./LearningStack.css";
 
@@ -9,6 +11,10 @@ function LearningStack() {
   const learningStack = useSelector(
     (state) => state.learningStack.learningStack
   );
+  const preferences = useSelector((state) => state.preferences.preferences);
+  const lastLearningDay = useSelector((state) => state.users.user?.lastLearningDay);
+
+  
 
   const [cardsAmount, setCardsAmount] = useState(0);
   const [doneCards, setDoneCards] = useState(0);
@@ -16,9 +22,74 @@ function LearningStack() {
   const [goodCount, setGoodCount] = useState(0);
   const [midCount, setMidCount] = useState(0);
   const [hardCount, setHardCount] = useState(0);
-  const [germanCardsCount, setGermanCardsCount] = useState(10);
-  const [russianCardsCount, setRussianCardsCount] = useState(0);
+  const [germanCardsCount, setGermanCardsCount] = useState(preferences.front_cards_count || 10);
+  const [russianCardsCount, setRussianCardsCount] = useState(preferences.back_cards_count || 10);
   const [fetchAllDue, setFetchAllDue] = useState(false);
+  const [learnedToday, setLearnedToday] = useState(false);
+
+  //updated last learning day und learning streak 
+  useEffect(() => {
+    if (doneCards > 0 && !learnedToday) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const lastLearnedDate = lastLearningDay ? new Date(lastLearningDay) : null;
+      lastLearnedDate?.setHours(0, 0, 0, 0);
+
+      if (!lastLearnedDate || today.getTime() !== lastLearnedDate.getTime()) {
+
+        dispatch(updateLastLearningDay(new Date().toISOString())); 
+  
+        if (lastLearnedDate) {
+          const timeDiff = today.getTime() - lastLearnedDate.getTime();
+          const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  
+          if (daysDiff > 1) {
+            dispatch(updateLearningStreak(1)); 
+          } else if (daysDiff === 1) {
+            dispatch(updateLearningStreak('increment'));
+          }
+        } else {
+          dispatch(updateLearningStreak(1)); 
+        }
+  
+        setLearnedToday(true);
+      }
+    }
+  }, [doneCards]);
+
+  //zuständig für fetch all mode
+  useEffect(() => {
+    const setFetchAllDueBasedOnPreferences = () => {
+      if (!preferences) {
+        setFetchAllDue(false);
+        return;
+      }
+  
+      switch (preferences.fetch_all_due_mode) {
+        case 'always':
+          setFetchAllDue(true);
+          break;
+        case 'never':
+          setFetchAllDue(false);
+          break;
+        case 'firstTimeDaily':
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const lastLearnedDate = lastLearningDay ? new Date(lastLearningDay) : null;
+          lastLearnedDate?.setHours(0, 0, 0, 0);
+
+          
+          
+          const shouldFetch = !lastLearnedDate || today.getTime() !== lastLearnedDate.getTime();
+          setFetchAllDue(shouldFetch);
+          break;
+        default:
+          setFetchAllDue(false);
+      }
+    };
+  
+    setFetchAllDueBasedOnPreferences();
+  }, [preferences, lastLearningDay]);
 
   const handleStartLearning = async () => {
     try {
@@ -57,6 +128,15 @@ function LearningStack() {
   const handleCardUpdated = () => {
     setDoneCards((doneCards) => doneCards + 1);
   };
+
+  useEffect(() => {
+    if (!preferences) {
+      dispatch(getPreferencesAction());
+    } else {
+      setGermanCardsCount(preferences.front_cards_count || 10);
+      setRussianCardsCount(preferences.back_cards_count || 0);
+    }
+  }, [dispatch, preferences]);
 
   return (
     <div className="learning-stack-container">
@@ -147,7 +227,7 @@ function LearningStack() {
                 />
                 <span className="slider round"></span>
               </label>
-              <span className="slider-text">Alle fälligen Karten holen</span>
+              <span className="slider-text">Alle fälligen Karten lernen</span>
             </div>
             </div>
 
@@ -197,7 +277,7 @@ function LearningStack() {
                 />
                 <span className="slider round"></span>
               </label>
-              <span className="slider-text">Alle fälligen Karten holen</span>
+              <span className="slider-text">Alle fälligen Karten lernen</span>
             </div>
           </div>
 

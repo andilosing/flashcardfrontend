@@ -20,9 +20,11 @@ import Deck from "./features/decks/components/Deck"
 import AddDeck from "./features/decks/components/AddDeck";
 import Requests from "./features/requests/components/Requests";
 import ShareDeck from "./features/decks/components/ShareDeck";
+import Preferences from "./features/preferences/components/Preferences";
 
 import { fetchRequestsAction, fetchNotificationsForUserAction } from "./features/requests/requestsAction"
 import { getLoggedInUserAction } from "./features/users/usersAction";
+import { getPreferencesAction } from "./features/preferences/preferencesAction";
 
 function App() {
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ function App() {
   const dispatch = useDispatch();
   const [isNavActive, setIsNavActive] = useState(false);
   const loggedInUser = useSelector((state) => state.users.user);
+  const isUserLoggedIn = Boolean(loggedInUser);
 
   useEffect(() => {
     if (location.pathname === "/login") {
@@ -50,6 +53,12 @@ function App() {
       navigate("/login");
     }
   }, [navigate, location]);
+
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      dispatch(getPreferencesAction());
+    }
+  }, [dispatch, isUserLoggedIn]);
 
   useEffect(() => {
     const tokenInfoString = localStorage.getItem("tokenInfo");
@@ -96,6 +105,7 @@ function App() {
             <Route path="/decks/:deck_id/addCard/:card_id" element={<AddCard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/requests" element={<Requests />} />
+            <Route path="/preferences" element={<Preferences />} />
             
 
           </Routes>

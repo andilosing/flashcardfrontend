@@ -8,7 +8,8 @@ import {
   FaStickyNote,
   FaBtc,
   FaBars,
-  FaBell
+  FaBell,
+  FaSlidersH
 } from "react-icons/fa";
 import "./NavBar.css";
 function NavBar({onNavClick, isActive }) {
@@ -23,7 +24,7 @@ function NavBar({onNavClick, isActive }) {
     { icon: <FaStickyNote size="25px" />, title: "Decks", link: "/decks"},
     { icon: <FaMedal size="25px" />, title: "Lernhistory", link: "/sessions" },
     { icon: <FaBell size="25px" />, title: "Mitteilungen", link: "/requests", notifications: requestsCount },
-
+    { icon: <FaSlidersH size="25px" />, title: "Einstellungen", link: "/preferences"}
   ];
 
 

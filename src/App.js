@@ -72,12 +72,6 @@ function App() {
     dispatch(fetchRequestsAction());
     dispatch(fetchNotificationsForUserAction());
   
-    const notificationInterval = setInterval(() => {
-      dispatch(fetchRequestsAction());
-      dispatch(fetchNotificationsForUserAction());
-    }, 3600000); 
-  
-    return () => clearInterval(notificationInterval);
   }, [dispatch, location]);
   
 

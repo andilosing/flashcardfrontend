@@ -42,7 +42,7 @@ export const updateLearningCardAction =
         throw new Error("Ungültige Schwierigkeit in Action");
       }
 
-      if (status < 1 || status > 10) {
+      if (status < 1 || status >20) {
         throw new Error("Ungültiger Status in Action");
       }
 

@@ -52,6 +52,13 @@ function NavBar({onNavClick, isActive }) {
     window.location.reload(); 
   }
 
+  const isActiveLink = (link) => {
+    if (link === "/") {
+      return location.pathname === link;
+    }
+    return location.pathname.startsWith(link);
+  };
+
   return (
     <nav className={`navigation-container ${isActive ? "active" : ""}`}>
       <div className="nav-header">
@@ -76,7 +83,8 @@ function NavBar({onNavClick, isActive }) {
                 onNavClick();
               }}
             >
-              <div className={`nav-item ${location.pathname === link ? "clicked" : ""}`}>
+              
+              <div className={`nav-item ${isActiveLink(link) ? "clicked" : ""}`}>
                 <span className="icon">{icon}
                 {notifications > 0 && 
                   <span className="notification-badge">{notifications}</span>

@@ -46,8 +46,8 @@ function Preferences() {
     back_cards_count: "Russische Karten",
     average_learning_time_good: "Gute ⌀ Lernzeit",
     average_learning_time_bad: "Schlechte ⌀ Lernzeit",
-    learning_streak_good: "Guter Lernstreak ",
-    learning_streak_bad: "Schlechter Lernstreak",
+    learning_streak_good: "Gute Lernstreak ",
+    learning_streak_bad: "Schlechte Lernstreak",
     fetch_all_due_mode: "Alle fälligen Karten",
   };
 

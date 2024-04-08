@@ -95,7 +95,11 @@ function LearningStack() {
     try {
       setDoneCards(0);
       setCardsAmount(0);
-      setFetchAllDue(false)
+
+      if (preferences.fetch_all_due_mode !== 'always') {
+        setFetchAllDue(false);
+      }
+      
       await dispatch(
         getLearningStackAction(germanCardsCount, russianCardsCount, fetchAllDue)
       );

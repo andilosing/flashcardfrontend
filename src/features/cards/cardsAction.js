@@ -1,4 +1,4 @@
-import { addCardApi, translateTextApi, getCardsForDeckApi, updateCardApi, deleteCardsApi } from "./cardsApi";
+import { addCardApi, translateTextApi, getCardsForDeckApi, updateCardApi, deleteCardsApi, changeCardsDeckApi } from "./cardsApi";
 import { addCardToDeck, fetchCardsForDeck, updateCardInDeck, removeCardsFromDeck } from "./cardsSlice";
 
 
@@ -84,6 +84,26 @@ export const deleteCardsAction = (deckId, cardIds) => async (dispatch) => {
     console.error("Error deleting cards in Action", error);
   }
 };
+
+export const changeCardsDeckAction = (cardIds, currentDeckId, targetDeckId) => async (dispatch) => {
+  try {
+      if (!cardIds.length || !currentDeckId || !targetDeckId) {
+          throw new Error("Fehlende Daten zum Verschieben der Karten");
+      }
+
+       await changeCardsDeckApi(cardIds, targetDeckId);
+
+      const updatedCurrentDeck = await getCardsForDeckApi(currentDeckId);
+      const updatedTargetDeck = await getCardsForDeckApi(targetDeckId);
+
+      dispatch(fetchCardsForDeck({ deckId: currentDeckId, cards: updatedCurrentDeck.cards, permissions: updatedCurrentDeck.permissions }));
+      dispatch(fetchCardsForDeck({ deckId: targetDeckId, cards: updatedTargetDeck.cards, permissions: updatedTargetDeck.permissions }));
+
+  } catch (error) {
+      console.error("Fehler beim Verschieben der Karten zwischen den Decks", error);
+  }
+};
+
 
 
 

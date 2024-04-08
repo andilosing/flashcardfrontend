@@ -134,6 +134,28 @@ export const deleteCardsApi = async (deckId, cardIds) => {
   }
 };
 
+export const changeCardsDeckApi = async (cardIds, newDeckId) => {
+  try {
+      const options = {
+          method: "PUT", 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ card_ids: cardIds, new_deck_id: newDeckId }),
+      };
+
+      const result = await baseFetch(`${ENDPOINT}/changeDeck`, options);
+      console.log(result)
+
+      if (result.data && result.data.cards) {
+          return result.data.cards; 
+      } else {
+          throw new Error("Fehler beim Verschieben der Karten");
+      }
+  } catch (error) {
+      console.error("Fehler beim API-Aufruf zum Verschieben der Karten:", error);
+      throw error;
+  }
+};
+
 
 
 

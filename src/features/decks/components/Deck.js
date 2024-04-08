@@ -4,14 +4,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   getCardsForDeckAction,
   deleteCardsAction,
+  changeCardsDeckAction
 } from "../../cards/cardsAction";
 import { setActiveStatusAction } from "../../learningStack/learningStackAction";
 import styles from "./Decks.css";
-import { FaPlus, FaTrash, FaPause, FaPlay } from "react-icons/fa";
+import { getDecksAction } from "../decksAction";
+import {
+  FaPlus,
+  FaTrash,
+  FaPause,
+  FaPlay,
+  FaExchangeAlt,
+} from "react-icons/fa";
 
 function Decks() {
   const { deck_id } = useParams();
   const deckDetails = useSelector((state) => state.cards.decks[deck_id]);
+  const userDecks = useSelector((state) => state.decks.decks);
   const cardsInDecks = deckDetails ? deckDetails.cards : [];
   const permissions = deckDetails ? deckDetails.permissions : {};
 
@@ -23,6 +32,9 @@ function Decks() {
 
   const [inactiveStatusMode, setInactiveStatusMode] = useState(false);
   const [activeStatusMode, setActiveStatusMode] = useState(false);
+
+  const [changeDeckMode, setChangeDeckMode] = useState(false);
+  const [selectedNewDeckId, setSelectedNewDeckId] = useState("");
 
   const [allSelected, setAllSelected] = useState(false);
 
@@ -38,10 +50,21 @@ function Decks() {
       await dispatch(getCardsForDeckAction(deck_id));
     };
 
+    const fetchDecks = async () => {
+      await dispatch(getDecksAction());
+    };
+
+    if(!userDecks || userDecks.length === 0){
+      fetchDecks()
+    }
+
     if (!deckDetails) {
       fetchCards();
     }
-  }, [deck_id, dispatch, deckDetails]);
+  }, [deck_id, dispatch, deckDetails, userDecks]);
+
+
+
 
   const userCanEdit =
     permissions.is_owner || permissions.permission_level === "write";
@@ -97,11 +120,11 @@ function Decks() {
   };
 
   const handleDeleteModeToggle = () => {
-    console.log(cardsInDecks);
     setDeleteMode(!deleteMode);
     setSelectedCards([]);
     setInactiveStatusMode(false);
     setActiveStatusMode(false);
+    setChangeDeckMode(false);
   };
 
   const handleInactiveStatusModeToggle = () => {
@@ -109,6 +132,7 @@ function Decks() {
     setSelectedCards([]);
     setDeleteMode(false);
     setActiveStatusMode(false);
+    setChangeDeckMode(false);
   };
 
   const handleActiveStatusModeToggle = () => {
@@ -116,6 +140,28 @@ function Decks() {
     setSelectedCards([]);
     setDeleteMode(false);
     setInactiveStatusMode(false);
+    setChangeDeckMode(false);
+  };
+
+  const handleDeckChangeModeToggle = () => {
+    setChangeDeckMode(!changeDeckMode);
+    setSelectedCards([]);
+    setDeleteMode(false);
+    setInactiveStatusMode(false);
+    setActiveStatusMode(false);
+  };
+
+  const handleSelectNewDeck = (event) => {
+    setSelectedNewDeckId(event.target.value);
+  };
+
+  const handleMoveSelectedCardsToNewDeck = async () => {
+    if (selectedCards.length > 0 && selectedNewDeckId) {
+      dispatch(changeCardsDeckAction(selectedCards, deck_id, selectedNewDeckId));
+      setSelectedCards([]);
+      setChangeDeckMode(false);
+      setSelectedNewDeckId("");
+    }
   };
 
   const selectAllCardsBasedOnStatus = () => {
@@ -200,14 +246,13 @@ function Decks() {
     );
   }
 
-
   function highlightAndFormatText(text, query) {
-    return text.split('\n').map((line, index) => {
+    return text.split("\n").map((line, index) => {
       const highlightedLine = highlightMatch(line, query);
       return (
         <React.Fragment key={index}>
           {highlightedLine}
-          {index < text.split('\n').length - 1 ? <br/> : ''}
+          {index < text.split("\n").length - 1 ? <br /> : ""}
         </React.Fragment>
       );
     });
@@ -215,6 +260,7 @@ function Decks() {
 
   return (
     <div className="decks-cards-container">
+      <h3 className="decks-cards-header">Karteikarten</h3>
       <div className="decks-cards-header-container">
         <div className="decks-edit-buttons-container left">
           <div
@@ -234,7 +280,7 @@ function Decks() {
             <FaPlay />
           </div>
         </div>
-        <h3 className="decks-cards-header">Karteikarten</h3>
+
         <div className="decks-edit-buttons-container right">
           {userCanEdit && (
             <>
@@ -246,6 +292,15 @@ function Decks() {
               >
                 <FaTrash />
               </div>
+
+              <button
+                onClick={handleDeckChangeModeToggle}
+                className={`change-deck-mode-button button ${
+                  changeDeckMode ? "active" : ""
+                }`}
+              >
+                <FaExchangeAlt />
+              </button>
 
               <div
                 onClick={handleAddCardClick}
@@ -288,7 +343,10 @@ function Decks() {
         </div>
       </div>
       <ul className="decks-cards-list">
-        {deleteMode || inactiveStatusMode || activeStatusMode ? (
+        {deleteMode ||
+        inactiveStatusMode ||
+        activeStatusMode ||
+        changeDeckMode ? (
           <button
             onClick={selectAllCardsBasedOnStatus}
             className="select-all-button button"
@@ -296,6 +354,7 @@ function Decks() {
             {allSelected ? "Alle abwählen" : "Alle auswählen"}
           </button>
         ) : null}
+        
         <div className="deck-cards-list-items-container">
           {filteredAndSortedCards &&
             filteredAndSortedCards
@@ -319,10 +378,15 @@ function Decks() {
                       ? "inactive-selected"
                       : activeStatusMode && selectedCards.includes(card.card_id)
                       ? "active-selected"
+                      : changeDeckMode && selectedCards.includes(card.card_id)
+                      ? "change-deck-selected"
                       : ""
                   }`}
                   onClick={() =>
-                    deleteMode || inactiveStatusMode || activeStatusMode
+                    deleteMode ||
+                    inactiveStatusMode ||
+                    activeStatusMode ||
+                    changeDeckMode
                       ? toggleCardSelection(card.card_id)
                       : userCanEdit && handleCardItemClick(card.card_id)
                   }
@@ -350,15 +414,32 @@ function Decks() {
                   </div>
                   <div className="card-content">
                     <div className="card-front">
-                    {highlightAndFormatText(card.front_content, searchQuery)}
+                      {highlightAndFormatText(card.front_content, searchQuery)}
                     </div>
                     <div className="card-back">
-                    {highlightAndFormatText(card.back_content, searchQuery)}
+                      {highlightAndFormatText(card.back_content, searchQuery)}
                     </div>
                   </div>
                 </li>
               ))}
         </div>
+        {userCanEdit && changeDeckMode && (
+          <div className="change-deck-container">
+            <select onChange={handleSelectNewDeck} value={selectedNewDeckId} className="select-deck">
+              <option value="">Wähle ein Deck...</option>
+              {userDecks &&
+                userDecks
+                  .filter(
+                    (deck) => ((deck.is_owner || deck.permission_level === "write") && (String(deck.deck_id) !== deck_id))
+                  )
+                  .map((deck) => (
+                    <option key={deck.deck_id} value={deck.deck_id}>
+                      {deck.name}
+                    </option>
+                  ))}
+            </select>
+          </div>
+        )}
         <div className="deck-cards-action-buttons-container">
           {deleteMode && userCanEdit && (
             <button
@@ -391,6 +472,18 @@ function Decks() {
               disabled={selectedCards.length <= 0}
             >
               aktiv
+            </button>
+          )}
+    
+          {changeDeckMode && userCanEdit && (
+            <button
+              onClick={handleMoveSelectedCardsToNewDeck}
+              className={`deck-action-button change-deck button ${
+                selectedCards.length > 0 && selectedNewDeckId ? "active" : ""
+              }`}
+              disabled={selectedCards.length <= 0 || !selectedNewDeckId}
+            >
+              Karten verschieben
             </button>
           )}
         </div>

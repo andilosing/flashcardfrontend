@@ -29,12 +29,6 @@ function NavBar({onNavClick, isActive }) {
   ];
 
 
-  const defaultClickedIndex = menuItems.findIndex(
-    (item) => item.title === "Dashboard"
-  );
-
-  const [clickedIndex, setClickedIndex] = useState(defaultClickedIndex);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -79,7 +73,6 @@ function NavBar({onNavClick, isActive }) {
               className="nav-li-item"
               key={index}
               onClick={() => {
-                setClickedIndex(index);
                 onNavClick();
               }}
             >

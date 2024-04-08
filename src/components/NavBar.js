@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaSchool,
   FaMedal,
@@ -14,6 +14,7 @@ import {
 import "./NavBar.css";
 function NavBar({onNavClick, isActive }) {
 
+  const location = useLocation();
   const requests = useSelector((state) => state.requests.requests);
   const notifications = useSelector((state) => state.requests.notifications)
   const requestsCount = requests.length + notifications.length;
@@ -82,7 +83,7 @@ function NavBar({onNavClick, isActive }) {
                 onNavClick();
               }}
             >
-              <div className={`nav-item ${clickedIndex === index ? "clicked" : ""}`}>
+              <div className={`nav-item ${location.pathname === link ? "clicked" : ""}`}>
                 <span className="icon">{icon}
                 {notifications > 0 && 
                   <span className="notification-badge">{notifications}</span>

@@ -31,3 +31,22 @@ export const getLoggedInUserApi = async () => {
         throw error;
     }
 };
+
+export const changePasswordApi = async (oldPassword, newPassword) => {
+    try {
+        const options = {
+            method: "POST",
+            body: JSON.stringify({ oldPassword, newPassword }),
+        };
+        const result = await baseFetch(`${USERS_ENDPOINT}change-password`, options);
+        
+        if (result.message && result.message === "Password changed successfully") {
+            return result.data; 
+        } else {
+            throw new Error(result.data.message || "Passwortänderung fehlgeschlagen");
+        }
+    } catch (error) {
+        console.error("Fehler beim Ändern des Passworts:", error);
+        throw error; 
+    }
+};

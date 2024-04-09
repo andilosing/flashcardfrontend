@@ -21,6 +21,7 @@ import AddDeck from "./features/decks/components/AddDeck";
 import Requests from "./features/requests/components/Requests";
 import ShareDeck from "./features/decks/components/ShareDeck";
 import Preferences from "./features/preferences/components/Preferences";
+import User from "./features/users/components/User"
 
 import { fetchRequestsAction, fetchNotificationsForUserAction } from "./features/requests/requestsAction"
 import { getLoggedInUserAction } from "./features/users/usersAction";
@@ -100,6 +101,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/requests" element={<Requests />} />
             <Route path="/preferences" element={<Preferences />} />
+            <Route path="/preferences/user" element={<User />} />
             
 
           </Routes>

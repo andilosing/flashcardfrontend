@@ -2,8 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { FaBars, FaClock, FaFire } from "react-icons/fa";
 import "./TopBar.css";
+import { useNavigate } from "react-router-dom";
+
 
 function TopBar({ isActive, onNavBarClick }) {
+  const navigate = useNavigate();
+
   const loggedInUser = useSelector((state) => state.users.user);
   const preferences = useSelector((state) => state.preferences.preferences);
 
@@ -26,6 +30,10 @@ const getStreakColor = (days) => {
     if (days >= learning_streak_good) return "lightgreen"; 
     if (days <= learning_streak_bad) return "salmon"; 
     return "khaki";
+};
+
+const navigateToUser = () => {
+  navigate("/preferences/user"); 
 };
 
 
@@ -60,7 +68,7 @@ const getStreakColor = (days) => {
         )}
       </div>
       {loggedInUser && loggedInUser.username && (
-        <div className="user">{getInitials(loggedInUser.username)}</div>
+        <div className="user" onClick={navigateToUser}>{getInitials(loggedInUser.username)}</div>
       )}
     </section>
   );

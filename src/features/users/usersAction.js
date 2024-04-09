@@ -1,4 +1,4 @@
-import { getAllUsersApi , getLoggedInUserApi} from "./usersApi";
+import { getAllUsersApi , getLoggedInUserApi, changePasswordApi} from "./usersApi";
 import { storeAllUsers, saveUser } from "./usersSlice";
 
 export const getAllUsersAction = () => async (dispatch) => {
@@ -19,3 +19,12 @@ export const getLoggedInUserAction = () => async (dispatch) => {
 
     }
   };
+
+  export const changePasswordAction = (oldPassword, newPassword) => async (dispatch) => {
+    try {
+        const response = await changePasswordApi(oldPassword, newPassword);
+        
+    } catch (error) {
+        console.error("Fehler beim Ändern des Passworts:", error);
+    }
+};

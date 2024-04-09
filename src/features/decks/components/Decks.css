@@ -66,19 +66,19 @@
   text-align: center;
 }
 
-.decks-list-item .deck-count.card {
+.deck-count.card {
   background-color: skyblue;
 }
 
-.decks-list-item .deck-count.learning-stack {
+.deck-count.learning-stack {
   background-color: skyblue;
 }
 
-.decks-list-item .deck-count.due-cards {
+.deck-count.due-cards {
   background-color: skyblue;
 }
 
-.decks-list-item .deck-count.queue-cards {
+.deck-count.queue-cards {
   background-color: skyblue;
 }
 
@@ -196,6 +196,15 @@
   backdrop-filter: blur(5px); 
   z-index: 10;
 }
+
+.decks-summary{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
 
 @media (max-width: 500px) {
   .deck-count-container {

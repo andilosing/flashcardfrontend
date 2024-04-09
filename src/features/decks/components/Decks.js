@@ -36,33 +36,51 @@ function Decks() {
   };
 
   const handleToggleMenu = (event, deckId) => {
-    event.stopPropagation(); 
-    setOpenMenuDeckId(openMenuDeckId === deckId ? null : deckId); 
+    event.stopPropagation();
+    setOpenMenuDeckId(openMenuDeckId === deckId ? null : deckId);
   };
 
   const handleShareDeck = (event, deckId, isOwner) => {
     event.stopPropagation();
     if (isOwner) {
       navigate(`/decks/share-deck/${deckId}`);
-      setOpenMenuDeckId(null); 
+      setOpenMenuDeckId(null);
     }
   };
 
+  const totalDueCardsFromActiveDecks = decks.reduce((total, deck) => {
+    return deck.is_active ? total + deck.due_cards_count : total;
+  }, 0);
+
+  const totalQueueCardsFromActiveDecks = decks.reduce((total, deck) => {
+    return deck.is_active ? total + deck.queue_cards_count : total;
+  }, 0);
+
   return (
     <div className={`decks-container ${openMenuDeckId ? "blur" : ""}`}>
-      {openMenuDeckId && <div className="overlay2" onClick={() => setOpenMenuDeckId(null)}></div>}
+      {openMenuDeckId && (
+        <div className="overlay2" onClick={() => setOpenMenuDeckId(null)}></div>
+      )}
       <div className="decks-cards-header-container">
         <div className="decks-edit-buttons-container left"></div>
         <h3 className="decks-header">Decks</h3>
         <div className="decks-edit-buttons-container right">
-        <div
-                onClick={handleAddDeckClick}
-                className="show-add-card-button button"
-              >
-                <FaPlus />
-              </div>
+          <div
+            onClick={handleAddDeckClick}
+            className="show-add-card-button button"
+          >
+            <FaPlus />
+          </div>
         </div>
       </div>
+
+      <div className="decks-summary">
+        <div className="deck-count due-cards">Gesamt fällig: {totalDueCardsFromActiveDecks}</div>
+        <div className="deck-count queue-cards">
+          Gesamt queue: {totalQueueCardsFromActiveDecks}
+        </div>
+      </div>
+
       <ul className="decks-list">
         {decks.map((deck) => (
           <li
@@ -122,7 +140,13 @@ function Decks() {
             )}
             {openMenuDeckId === deck.deck_id && deck.is_owner && (
               <ul className="deck-menu-actions">
-                <li onClick={(event) => handleShareDeck(event, deck.deck_id, deck.is_owner)}>Deck teilen</li>
+                <li
+                  onClick={(event) =>
+                    handleShareDeck(event, deck.deck_id, deck.is_owner)
+                  }
+                >
+                  Deck teilen
+                </li>
               </ul>
             )}
           </li>

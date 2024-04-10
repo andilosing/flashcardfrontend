@@ -7,6 +7,7 @@ import {
 } from "../preferencesAction";
 import { FaSave, FaUndo } from "react-icons/fa";
 import styles from "./Preferences.css";
+import { showPopup } from "../../popup/popupSlice";
 
 function Preferences() {
   const dispatch = useDispatch();
@@ -30,11 +31,24 @@ function Preferences() {
   };
 
   const handleSavePreferences = async () => {
-    await dispatch(updatePreferencesAction(localPreferences));
+    try{
+      await dispatch(updatePreferencesAction(localPreferences));
+      dispatch(showPopup({ message: `Einstellungen erfolgreich gespeichert`, type: 'success' }));
+    } catch(error){
+      console.log(error)
+    }
+    
+
   };
 
   const handleResetPreferences = async () => {
-    await dispatch(resetPreferencesAction());
+    try {
+      await dispatch(resetPreferencesAction());
+    dispatch(showPopup({ message: `Einstellungen erfolgreich zurückgesetzt`, type: 'success' }));
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   // Füge fetch_all_due_mode den textPreferences hinzu, um zu verdeutlichen, dass es eine separate Logik benötigt
@@ -78,14 +92,7 @@ function Preferences() {
     always: "Immer",
   };
 
-  const handleRadioChange = (e) => {
-    const { name, value } = e.target;
-    setLocalPreferences((prevPreferences) => ({
-      ...prevPreferences,
-      [name]: value,
-    }));
-  };
-
+  
   return (
     <div className="preferences-container">
       <h3 className="preferences-header">Einstellungen</h3>

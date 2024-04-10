@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { changePasswordAction } from "../usersAction"; 
+import { showPopup } from "../../popup/popupSlice";
 import { FaSave } from "react-icons/fa";
 import styles from "./User.css"; 
 
@@ -21,12 +22,18 @@ function User() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
     if (passwords.newPassword !== passwords.confirmPassword) {
-      alert("Die neuen Passwörter stimmen nicht überein");
+      dispatch(showPopup({ message: 'Das neue Passwort stimmt nicht überein', type: 'error' }));
       return;
     }
     await dispatch(changePasswordAction(passwords.oldPassword, passwords.newPassword));
+    dispatch(showPopup({ message: `Passwort erfolgreich aktualisiert`, type: 'success' }));
+    } catch (error) {
+      
+    }
+    
   };
 
   return (

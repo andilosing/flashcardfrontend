@@ -7,6 +7,7 @@ import {
 import styles from "./LearningSessions.css";
 import { FaCalendar, FaStopwatch, FaIdCard } from "react-icons/fa";
 import { getAllUsersAction } from "../../users/usersAction";
+import { showPopup } from "../../popup/popupSlice";
 
 function LearningSessions() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function LearningSessions() {
         await dispatch(getAllUsersAction());
         await dispatch(getLearningSessionsAction());
       } catch (error) {
+        dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
         console.log("Fehler beim Laden des Lernstapels:", error);
       }
     };

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addDeckAction } from "../decksAction"; 
 import styles from "./AddDeck.css"; 
+import { showPopup } from "../../popup/popupSlice";
 
 function AddDeck() {
   const [deckName, setDeckName] = useState("");
@@ -15,9 +16,11 @@ function AddDeck() {
     if (deckName) {
       try {
         await dispatch(addDeckAction(deckName)); 
+        dispatch(showPopup({ message: `Deck erfolgreich hinzugefügt`, type: 'success' }));
         navigate("/decks"); 
         setDeckName(""); 
       } catch (error) {
+        dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
         console.error("Fehler beim Hinzufügen des Decks:", error);
       }
     }

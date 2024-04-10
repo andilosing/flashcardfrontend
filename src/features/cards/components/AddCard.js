@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { addCardAction, translateTextAction, getCardsForDeckAction, updateCardAction } from "../cardsAction";
 import styles from "./AddCard.css";
+import { showPopup } from "../../popup/popupSlice";
 
 function AddCard() {
   const [frontText, setFrontText] = useState("");
@@ -45,7 +46,7 @@ function AddCard() {
         setFrontText("");
         setBackText("");
       } catch (error) {
-        console.error("Fehler beim Hinzufügen/Aktualisieren der Karte:", error);
+        dispatch(showPopup({ message: `Fehler beim Hinzufügen/Aktualisieren der Karte: ${error.message}`, type: 'error' }));
       }
     }
   };

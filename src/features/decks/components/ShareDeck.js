@@ -12,6 +12,7 @@ import {
 } from "../../requests/requestsAction";
 import styles from "./ShareDeck.css";
 import { FaTrash, FaUser, FaEye, FaEdit } from "react-icons/fa";
+import { showPopup } from "../../popup/popupSlice";
 
 function ShareDeck() {
   const { deck_id } = useParams();
@@ -35,12 +36,14 @@ function ShareDeck() {
         await dispatch(
           addRequestAction("SHARE_DECK", selectedUserId, deck_id, permission)
         );
+        dispatch(showPopup({ message: `Anfrage erfolgreich gesendet`, type: 'success' }));
         setSelectedUserId("");
         setPermission("read");
         dispatch(getDeckSharesAction(deck_id));
         dispatch(fetchEligibleUsersForShareDeckAction(deck_id));
       }
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log(error);
     }
   };
@@ -50,7 +53,9 @@ function ShareDeck() {
       if (requestId) {
         await dispatch(deleteShareRequestAction(requestId, deck_id));
       }
+      dispatch(showPopup({ message: `Anfrage erfolgreich gelöscht`, type: 'success' }));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log(error);
     }
   };
@@ -62,7 +67,9 @@ function ShareDeck() {
       await dispatch(
         updateSharePermissionAction(shareId, deck_id, newPermissionLevel)
       );
+      dispatch(showPopup({ message: `Berechtigung erfolgreich geändert`, type: 'success' }));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error(error);
     }
   };

@@ -8,6 +8,7 @@ import {
 } from "../requestsAction";
 import styles from "./Requests.css";
 import { FaCheck, FaTimes, FaUser, FaIdCard, FaStopwatch } from "react-icons/fa";
+import { showPopup } from "../../popup/popupSlice";
 
 function Requests() {
   const requests = useSelector((state) => state.requests.requests);
@@ -28,13 +29,25 @@ function Requests() {
 
 
   const handleAccept = (requestId) => {
-    let action = "accept";
-    dispatch(handleRequestResponseAction(requestId, action));
+    try {
+      let action = "accept";
+      dispatch(handleRequestResponseAction(requestId, action));
+      dispatch(showPopup({ message: `Anfrage erfolgreich angenommen`, type: 'success' }));
+    } catch (error) {
+      
+    }
+   
   };
 
   const handleReject = (requestId) => {
-    let action = "decline";
-    dispatch(handleRequestResponseAction(requestId, action));
+    try {
+      let action = "decline";
+      dispatch(handleRequestResponseAction(requestId, action));
+      dispatch(showPopup({ message: `Anfrage erfolgreich abgelehnt`, type: 'success' }));
+    } catch (error) {
+      
+    }
+   
   };
 
   return (

@@ -22,6 +22,7 @@ import Requests from "./features/requests/components/Requests";
 import ShareDeck from "./features/decks/components/ShareDeck";
 import Preferences from "./features/preferences/components/Preferences";
 import User from "./features/users/components/User"
+import Popup from "./features/popup/components/Popup";
 
 import { fetchRequestsAction, fetchNotificationsForUserAction } from "./features/requests/requestsAction"
 import { getLoggedInUserAction } from "./features/users/usersAction";
@@ -102,9 +103,9 @@ function App() {
             <Route path="/requests" element={<Requests />} />
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/preferences/user" element={<User />} />
-            
-
           </Routes>
+
+          <Popup />
         </section>
       </section>
     </div>

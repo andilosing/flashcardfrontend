@@ -8,6 +8,7 @@ import decksReducer from "../features/decks/decksSlice"
 import requestsReducer from "../features/requests/requestsSlice"
 import usersReducer from "../features/users/usersSlice"
 import preferencesReducer from "../features/preferences/preferencesSlice"
+import popupReducer from "../features/popup/popupSlice"
 
 const combinedReducer = combineReducers({
     learningStack: learningStackReducer,
@@ -16,7 +17,8 @@ const combinedReducer = combineReducers({
     decks: decksReducer,
     requests: requestsReducer,
     users: usersReducer,
-    preferences: preferencesReducer
+    preferences: preferencesReducer,
+    popup: popupReducer
 
 });
 

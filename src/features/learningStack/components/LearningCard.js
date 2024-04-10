@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { updateLearningCardAction } from "../learningStackAction";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./LearningCard.css";
+import { showPopup } from "../../popup/popupSlice";
 
 function LearningCard({ card, onCardUpdated, onUpdateDifficulty }) {
   const [showBack, setShowBack] = useState(false);
@@ -24,6 +25,7 @@ function LearningCard({ card, onCardUpdated, onUpdateDifficulty }) {
         }
       );
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log(error)
     }
    
@@ -37,6 +39,7 @@ function LearningCard({ card, onCardUpdated, onUpdateDifficulty }) {
       ));
       
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log(error)
     }
    

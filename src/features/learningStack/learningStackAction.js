@@ -8,6 +8,7 @@ import {
   updateLearningStackStatus,
   setActiveStatus,
 } from "../cards/cardsSlice";
+import { showPopup } from "../popup/popupSlice";
 
 export const getLearningStackAction =
   (germanCardsCount, russianCardsCount, fetchAllDue) => async (dispatch) => {
@@ -28,6 +29,7 @@ export const getLearningStackAction =
       const cardIdsInLearningStack = learningStack.map((card) => card.card_id);
       await dispatch(updateLearningStackStatus(cardIdsInLearningStack));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
     }
   };
@@ -53,6 +55,7 @@ export const updateLearningCardAction =
       );
       dispatch(updatedLearningCard(updatedCardId));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Abrufen der Eigenschaften:", error);
     }
   };
@@ -71,6 +74,7 @@ export const setActiveStatusAction =
       await setActiveStatusApi(cardIds, activeStatus);
       dispatch(setActiveStatus({ deckId, cardIds, activeStatus }));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Error deleting cards in Action", error);
     }
   };

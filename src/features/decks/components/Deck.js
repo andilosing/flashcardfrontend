@@ -16,6 +16,7 @@ import {
   FaPlay,
   FaExchangeAlt,
 } from "react-icons/fa";
+import { showPopup } from "../../popup/popupSlice";
 
 function Decks() {
   const { deck_id } = useParams();
@@ -103,6 +104,7 @@ function Decks() {
         setInactiveStatusMode(false);
       }
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log("Fehler beim Setzen des inaktiven Status für Karten:", error);
     }
   };
@@ -115,6 +117,7 @@ function Decks() {
         setActiveStatusMode(false);
       }
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log("Fehler beim Setzen des inaktiven Status für Karten:", error);
     }
   };
@@ -191,6 +194,7 @@ function Decks() {
         card.is_active === null || card.is_active === false ? true : false;
       await dispatch(setActiveStatusAction(deck_id, [card.card_id], newStatus));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Ändern des Kartenstatus:", error);
     }
   };

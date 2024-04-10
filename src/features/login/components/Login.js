@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate, Link } from "react-router-dom";
+import { showPopup } from "../../popup/popupSlice";
 
 import { loginUserAction } from "../loginAction";
 import { fetchRequestsAction } from "../../requests/requestsAction";
@@ -28,7 +29,7 @@ function Login() {
       await dispatch(fetchRequestsAction());
       navigate("/")
     } catch (error) {
-      console.log("Fehler beim einloggen");
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     }
   };
 

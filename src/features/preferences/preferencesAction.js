@@ -1,12 +1,14 @@
 
 import { getPreferencesApi, updatePreferencesApi, resetPreferencesApi } from "./preferencesApi";
 import { setPreferences } from "./preferencesSlice";
+import { showPopup } from "../popup/popupSlice";
 
 export const getPreferencesAction = () => async (dispatch) => {
   try {
     const preferences = await getPreferencesApi();
     dispatch(setPreferences(preferences));
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     console.error("Error fetching preferences in Action:", error);
   }
 };
@@ -37,7 +39,10 @@ export const updatePreferencesAction = (preferences) => async (dispatch) => {
       await updatePreferencesApi(preferences);
       dispatch(setPreferences(preferences));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Error updating preferences in Action:", error);
+      throw error
+      
     }
   };
   
@@ -49,6 +54,8 @@ export const resetPreferencesAction = () => async (dispatch) => {
     const defaultPreferences = await resetPreferencesApi();
     dispatch(setPreferences(defaultPreferences));
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     console.error("Error resetting preferences in Action:", error);
+    throw error
   }
 };

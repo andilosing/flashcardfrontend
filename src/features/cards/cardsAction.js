@@ -1,5 +1,6 @@
 import { addCardApi, translateTextApi, getCardsForDeckApi, updateCardApi, deleteCardsApi, changeCardsDeckApi } from "./cardsApi";
 import { addCardToDeck, fetchCardsForDeck, updateCardInDeck, removeCardsFromDeck } from "./cardsSlice";
+import { showPopup } from "../popup/popupSlice";
 
 
 export const addCardAction = (deckId, frontText, backText) => async (dispatch) => {
@@ -15,6 +16,7 @@ export const addCardAction = (deckId, frontText, backText) => async (dispatch) =
       dispatch(addCardToDeck({deckId, card}));
 
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler hinzufügen einer Karteikarte in Action", error);
     }
   };
@@ -46,6 +48,7 @@ export const getCardsForDeckAction = (deckId) => async (dispatch) => {
     const permissions = cardsInDeck.permissions
     dispatch(fetchCardsForDeck({deckId, cards, permissions}));
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     console.error("Fehler beim Abrufen der Eigenschaften:", error);
 
   }
@@ -66,6 +69,7 @@ export const updateCardAction = (deckId, cardId, frontText, backText) => async (
     dispatch(updateCardInDeck({deckId, cardId: numericCardId, updatedCard}));
 
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     console.error("Fehler hinzufügen einer Karteikarte in Action", error);
 
   }
@@ -81,6 +85,7 @@ export const deleteCardsAction = (deckId, cardIds) => async (dispatch) => {
     dispatch(removeCardsFromDeck({deckId, cardIds}));
 
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     console.error("Error deleting cards in Action", error);
   }
 };
@@ -100,6 +105,7 @@ export const changeCardsDeckAction = (cardIds, currentDeckId, targetDeckId) => a
       dispatch(fetchCardsForDeck({ deckId: targetDeckId, cards: updatedTargetDeck.cards, permissions: updatedTargetDeck.permissions }));
 
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Verschieben der Karten zwischen den Decks", error);
   }
 };

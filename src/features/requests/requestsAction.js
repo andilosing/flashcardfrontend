@@ -18,12 +18,14 @@ import {
   setEligibleUsersForShareDeck,
   removeRequest,
 } from "../decks/decksSlice";
+import { showPopup } from "../popup/popupSlice";
 
 export const fetchRequestsAction = () => async (dispatch) => {
   try {
     const requests = await fetchRequestsApi();
     dispatch(fetchRequests(requests));
   } catch (error) {
+    dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
     console.error("Fehler beim Abrufen von Anfragen in Action", error);
   }
 };
@@ -43,7 +45,9 @@ export const addRequestAction =
       );
       dispatch(addRequest(newRequest));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Hinzufügen einer Anfrage in Action", error);
+      throw error
     }
   };
 
@@ -57,10 +61,12 @@ export const fetchEligibleUsersForShareDeckAction =
       const eligibleUsers = await fetchEligibleUsersForShareDeckApi(deckId);
       dispatch(setEligibleUsersForShareDeck({ deckId, users: eligibleUsers }));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error(
         "Fehler beim Abrufen der berechtigten Benutzer für das Teilen des Decks",
         error
       );
+      throw error
     }
   };
 
@@ -75,6 +81,7 @@ export const deleteShareRequestAction =
       await dispatch(fetchEligibleUsersForShareDeckAction(deckId));
       dispatch(removeRequest({ requestId, deckId }));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Löschen der Anfrage in Action", error);
     }
   };
@@ -92,7 +99,9 @@ export const handleRequestResponseAction =
 
       await dispatch(removeRequestBecauseOfResponse({ requestId }));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler bei der Bearbeitung der Anfrage in Action", error);
+      throw error
     }
   };
 
@@ -104,7 +113,9 @@ export const handleRequestResponseAction =
       const notifications = await getNotificationsForUserApi();
       dispatch(setNotifications(notifications));
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Abrufen von Benachrichtigungen in Action", error);
+      
     }
   };
 
@@ -113,6 +124,8 @@ export const handleRequestResponseAction =
       await updateLastViewedAtForUserApi();
       dispatch(updateLastViewedAt());
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Aktualisieren des letzten Anzeigezeitpunkts in Action", error);
+      
     }
   };

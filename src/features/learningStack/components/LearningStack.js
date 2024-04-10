@@ -5,6 +5,7 @@ import { getPreferencesAction } from "../../preferences/preferencesAction";
 import { updateLastLearningDay, updateLearningStreak } from "../../users/usersSlice";
 import LearningCard from "./LearningCard";
 import styles from "./LearningStack.css";
+import { showPopup } from "../../popup/popupSlice";
 
 function LearningStack() {
   const dispatch = useDispatch();
@@ -105,6 +106,7 @@ function LearningStack() {
       );
       await resetDifficultyCounters();
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.log("Fehler beim Laden des Lernstapels");
     }
   };

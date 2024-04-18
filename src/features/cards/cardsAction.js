@@ -37,6 +37,8 @@ export const translateTextAction = async (text, sourceLang, targetLang)  => {
     
   } catch (error) {
     console.error("Fehler beim Übersetzen", error);
+    throw error
+    
   }
 }
 

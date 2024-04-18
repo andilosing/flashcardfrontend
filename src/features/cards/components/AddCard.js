@@ -32,6 +32,8 @@ function AddCard() {
       }
     }
   }, [card_id, deck_id, cardsInDecks]);
+
+
   
 
   const handleCardAction = async () => {
@@ -60,11 +62,14 @@ function AddCard() {
         targetLang
       );
       if (sourceLang === "DE") {
+        
         setBackText(translation);
+        setFrontText(frontText.replace(/^([.,]+|,.)/, ''));
       } else {
         setFrontText(translation);
       }
     } catch (error) {
+      dispatch(showPopup({ message: `${error.message}`, type: 'error' }));
       console.error("Fehler beim Übersetzen", error);
     }
   };

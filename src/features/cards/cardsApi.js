@@ -47,7 +47,7 @@ export const translateTextApi  = async (text, sourceLang, targetLang) => {
     };
 
     const result = await baseFetch("/translate/", options);
-
+    
     if (result.data && result.data.translations) {
       return result.data.translations;
     } else {

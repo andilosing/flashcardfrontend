@@ -65,6 +65,7 @@ function AddCard() {
         
         setBackText(translation);
         setFrontText(frontText.replace(/^([.,]+|,.)/, ''));
+        
       } else {
         setFrontText(translation);
       }

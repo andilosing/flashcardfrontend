@@ -28,7 +28,7 @@ function NavBar({onNavClick, isActive }) {
     { icon: <FaSlidersH size="25px" />, title: "Einstellungen", link: "/preferences"}
   ];
 
-
+  const [btcPrice, setBtcPrice] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -45,6 +45,28 @@ function NavBar({onNavClick, isActive }) {
     return () => {
       window.removeEventListener('loginStatusChanged', handleLoginStatusChange);
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchBtcPrice = async () => {
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        if (!response.ok) {  
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const newPrice = data.bitcoin.usd;
+        
+        setBtcPrice(`$${newPrice.toLocaleString()}`);
+        
+      } catch (error) {
+        console.error('Failed to fetch Bitcoin price:', error);
+      }
+    };
+
+    fetchBtcPrice();
+    const interval = setInterval(fetchBtcPrice, 3600000); 
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -65,6 +87,7 @@ function NavBar({onNavClick, isActive }) {
       <div className="logo">
         <span className="icon">
           <FaBtc size="30px" />
+          <span className={`btc-price`}>{btcPrice}</span>
         </span>
         <span className="title"></span>
       </div>

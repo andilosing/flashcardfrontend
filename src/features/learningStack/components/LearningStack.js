@@ -7,6 +7,7 @@ import LearningCard from "./LearningCard";
 import styles from "./LearningStack.css";
 import { showPopup } from "../../popup/popupSlice";
 
+
 function LearningStack() {
   const dispatch = useDispatch();
   const learningStack = useSelector(

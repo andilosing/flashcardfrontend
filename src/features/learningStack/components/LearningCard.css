@@ -22,6 +22,7 @@
   }
   
   .front-text, .back-text {
+    position: relative;
     border-radius: 5px;
     border: 1px solid #4f4f4f; 
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
@@ -37,6 +38,25 @@
     font-size: 1.25rem;
 }
 
+.text-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.speech-icon{
+  color: white;
+  width: 20px; /* Breite des Buttons */
+  height: 20px;
+  background: inherit;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  cursor: pointer;
+}
 
 
   
